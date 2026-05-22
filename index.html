@@ -1,1158 +1,704 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Remodel Invoice Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #F5F0E8; --surface: #FDFAF4; --card: #FFFFFF;
-  --accent: #C8522A; --accent2: #2A6B4F; --text: #1A1612;
-  --muted: #8A7F72; --border: #DDD5C8; --tag-bg: #EDE8DF;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova Build | Design · Build · Remodel | Seattle, WA</title>
+  <meta name="description" content="Seattle's trusted design-build-remodel contractor. Kitchen, bathroom, ADU & whole home renovations. Licensed, insured, local. Get a free estimate today." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── HEADER ── */
-header {
-  background: var(--text); color: var(--bg);
-  padding: 14px 20px; display: flex; align-items: center;
-  justify-content: space-between; position: sticky; top: 0; z-index: 100; gap: 10px;
-}
-.logo { display: flex; align-items: baseline; gap: 8px; flex-shrink: 0; }
-.logo-title { font-family: 'Instrument Serif', serif; font-size: 20px; }
-.logo-tag { font-family: 'DM Mono', monospace; font-size: 9px; background: var(--accent); color: white; padding: 2px 6px; border-radius: 3px; letter-spacing: .04em; }
-.logo-tag.green { background: var(--accent2); }
-.header-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
-.header-client-info { font-size: 12px; color: rgba(245,240,232,0.7); text-align: right; line-height: 1.4; }
+    :root {
+      --navy: #1C2D50;
+      --navy-light: #253760;
+      --gold: #C9A84C;
+      --gold-light: #E2BC6A;
+      --white: #ffffff;
+      --gray-50: #F8F9FA;
+      --gray-100: #F1F3F5;
+      --gray-400: #9CA3AF;
+      --gray-600: #4B5563;
+      --gray-800: #1F2937;
+    }
 
-/* ── BUTTONS ── */
-.btn { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.15s; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
-.btn-ghost { background: rgba(255,255,255,0.1); color: var(--bg); border: 1px solid rgba(255,255,255,0.2); }
-.btn-ghost:hover { background: rgba(255,255,255,0.2); }
-.btn-accent { background: var(--accent); color: white; }
-.btn-accent:hover { background: #b3471f; }
-.btn-green { background: var(--accent2); color: white; }
-.btn-green:hover { background: #1f5a40; }
-.btn-sm { font-size: 12px; padding: 6px 12px; }
-.btn-outline { background: none; border: 1.5px solid var(--border); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
-.btn-outline:hover { background: var(--bg); }
-.btn-danger { background: #fee2e2; color: #dc2626; border: none; font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-.btn-danger:hover { background: #fecaca; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--gray-800); background: #fff; }
 
-/* ── LAYOUT ── */
-.layout { display: flex; height: calc(100vh - 49px); }
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(28, 45, 80, 0.97);
+      backdrop-filter: blur(8px);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo svg { height: 38px; width: auto; }
+    .nav-logo-text { color: white; }
+    .nav-logo-text .brand { font-size: 18px; font-weight: 800; letter-spacing: 1px; }
+    .nav-logo-text .tagline { font-size: 9px; letter-spacing: 2.5px; color: var(--gold); }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--navy) !important;
+      padding: 9px 20px; border-radius: 6px; font-weight: 700 !important;
+      font-size: 13px !important;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
 
-/* ── SIDEBAR ── */
-.sidebar { width: 260px; min-width: 200px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
-.sidebar-header { padding: 14px 14px 10px; border-bottom: 1px solid var(--border); }
-.sidebar-section-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; }
-.project-list { flex: 1; overflow-y: auto; padding: 8px; }
-.project-item { padding: 10px 12px; border-radius: 8px; cursor: pointer; margin-bottom: 4px; transition: background 0.12s; border: 1.5px solid transparent; }
-.project-item:hover { background: var(--tag-bg); }
-.project-item.active { background: var(--card); border-color: var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-.project-name { font-weight: 600; font-size: 13px; margin-bottom: 2px; }
-.project-meta { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2px; }
-.project-amount { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); font-weight: 500; }
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 60%, #1a3a6e 100%);
+      display: flex; align-items: center;
+      padding: 120px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: 55%;
+      background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80') center/cover no-repeat;
+      opacity: 0.18;
+      clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    .hero-content { max-width: 620px; position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold); font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 800; color: white; line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p {
+      font-size: 18px; color: rgba(255,255,255,0.75);
+      line-height: 1.7; margin-bottom: 36px; max-width: 520px;
+    }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn-primary {
+      background: var(--gold); color: var(--navy);
+      padding: 16px 32px; border-radius: 8px;
+      font-size: 16px; font-weight: 700; text-decoration: none;
+      transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.5); }
+    .btn-secondary {
+      background: transparent; color: white;
+      padding: 16px 32px; border-radius: 8px;
+      font-size: 16px; font-weight: 600; text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.35);
+      transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary:hover { border-color: white; background: rgba(255,255,255,0.08); }
+    .hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
+    .stat { }
+    .stat-num { font-size: 32px; font-weight: 800; color: var(--gold); line-height: 1; }
+    .stat-label { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
 
-/* sidebar tabs */
-.sidebar-tabs { display: flex; border-top: 1px solid var(--border); flex-shrink: 0; }
-.sidebar-tab { flex: 1; padding: 10px 4px; text-align: center; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); cursor: pointer; border-top: 2px solid transparent; transition: all 0.12s; }
-.sidebar-tab:hover { color: var(--text); background: var(--tag-bg); }
-.sidebar-tab.active { color: var(--accent); border-top-color: var(--accent); background: var(--card); }
-.sidebar-tab .tab-icon { font-size: 14px; display: block; margin-bottom: 2px; }
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: var(--gray-50); border-bottom: 1px solid #E5E7EB;
+      padding: 18px 5%;
+      display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap;
+    }
+    .trust-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--gray-600); }
+    .trust-item svg { color: var(--navy); }
 
-/* ── MAIN ── */
-.main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; min-width: 0; }
-.main-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); background: var(--surface); }
-.main-header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.project-h1 { font-family: 'Instrument Serif', serif; font-size: 24px; font-weight: 400; line-height: 1.2; }
-.project-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
-.stats-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-.stat-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 90px; }
-.stat-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px; }
-.stat-value { font-family: 'DM Mono', monospace; font-size: 17px; font-weight: 500; }
-.stat-value.red { color: var(--accent); }
-.stat-value.green { color: var(--accent2); }
-.stat-value.orange { color: #d97706; }
+    /* ── SECTIONS ── */
+    section { padding: 88px 5%; }
+    .section-label { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .section-title { font-size: clamp(28px, 3.5vw, 42px); font-weight: 800; color: var(--navy); line-height: 1.2; margin-bottom: 16px; }
+    .section-sub { font-size: 17px; color: var(--gray-600); line-height: 1.7; max-width: 580px; }
+    .center { text-align: center; }
+    .center .section-sub { margin: 0 auto; }
 
-/* progress bar */
-.progress-bar-wrap { background: var(--border); border-radius: 4px; height: 6px; margin-top: 12px; overflow: hidden; }
-.progress-bar-fill { height: 100%; background: var(--accent2); border-radius: 4px; transition: width 0.4s ease; }
+    /* ── SERVICES ── */
+    .services { background: white; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 52px; }
+    .service-card {
+      border: 1px solid #E5E7EB; border-radius: 12px;
+      padding: 36px 32px; transition: all 0.25s;
+      background: white; position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%; background: var(--gold);
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform 0.3s;
+    }
+    .service-card:hover { box-shadow: 0 12px 40px rgba(28,45,80,0.12); transform: translateY(-4px); }
+    .service-card:hover::before { transform: scaleY(1); }
+    .service-icon {
+      width: 54px; height: 54px; background: rgba(28,45,80,0.06);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .service-card h3 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+    .service-card p { font-size: 15px; color: var(--gray-600); line-height: 1.65; }
+    .service-list { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 6px; }
+    .service-list li { font-size: 14px; color: var(--gray-600); display: flex; align-items: center; gap: 8px; }
+    .service-list li::before { content: '✓'; color: var(--gold); font-weight: 700; }
 
-/* ── CONTENT AREA ── */
-.content-area { padding: 20px 24px; flex: 1; }
+    /* ── WHY US ── */
+    .why-us { background: var(--navy); }
+    .why-us .section-title { color: white; }
+    .why-us .section-sub { color: rgba(255,255,255,0.65); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 52px; }
+    .why-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 28px 24px;
+      display: flex; gap: 18px;
+    }
+    .why-num { font-size: 40px; font-weight: 800; color: rgba(201,168,76,0.25); line-height: 1; flex-shrink: 0; width: 48px; }
+    .why-card h4 { font-size: 17px; font-weight: 700; color: white; margin-bottom: 8px; }
+    .why-card p { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; }
 
-/* ── SECTION LABEL ── */
-.section-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    /* ── PROCESS ── */
+    .process { background: var(--gray-50); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; margin-top: 52px; position: relative; }
+    .steps::before {
+      content: ''; position: absolute; top: 36px; left: 10%; right: 10%; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--navy));
+      z-index: 0;
+    }
+    .step { text-align: center; padding: 0 16px; position: relative; z-index: 1; }
+    .step-num {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--navy); color: var(--gold);
+      font-size: 24px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 0 6px var(--gray-50);
+    }
+    .step h4 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .step p { font-size: 14px; color: var(--gray-600); line-height: 1.6; }
 
-/* ── PAYMENT TABLE ── */
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.payment-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 500px; }
-.payment-table th { text-align: left; font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 0 10px 10px; border-bottom: 1px solid var(--border); }
-.payment-table th:last-child { text-align: right; }
-.payment-table td { padding: 10px; vertical-align: middle; font-size: 13px; }
-.payment-table td:last-child { text-align: right; font-family: 'DM Mono', monospace; font-weight: 500; }
-.payment-table tr:not(:last-child) td { border-bottom: 1px solid #f0ebe3; }
-.payment-table tbody tr:hover td { background: #fdfaf4; }
-.payment-actions { display: flex; gap: 4px; justify-content: flex-end; }
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: white; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 52px; }
+    .review-card {
+      border: 1px solid #E5E7EB; border-radius: 12px; padding: 28px;
+      transition: box-shadow 0.2s;
+    }
+    .review-card:hover { box-shadow: 0 8px 30px rgba(28,45,80,0.1); }
+    .stars { color: #FBBF24; font-size: 18px; margin-bottom: 14px; }
+    .review-text { font-size: 15px; color: var(--gray-600); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .reviewer-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--navy); color: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px;
+    }
+    .reviewer-name { font-weight: 700; font-size: 14px; color: var(--navy); }
+    .reviewer-loc { font-size: 12px; color: var(--gray-400); }
 
-/* payment type badges */
-.type-badge { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
-.type-labor     { background: #dbeafe; color: #1d4ed8; }
-.type-materials { background: #fef3c7; color: #92400e; }
-.type-permit    { background: #d1fae5; color: #065f46; }
-.type-other     { background: var(--tag-bg); color: var(--muted); }
+    /* ── CONTACT ── */
+    .contact { background: var(--gray-50); }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contact-info { }
+    .contact-detail { display: flex; align-items: flex-start; gap: 16px; margin-top: 28px; }
+    .contact-icon {
+      width: 48px; height: 48px; background: var(--navy); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .contact-detail h4 { font-size: 14px; font-weight: 600; color: var(--gray-600); margin-bottom: 4px; }
+    .contact-detail p { font-size: 16px; font-weight: 700; color: var(--navy); }
+    .contact-form { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 30px rgba(28,45,80,0.1); }
+    .form-title { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .form-sub { font-size: 14px; color: var(--gray-600); margin-bottom: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 12px 14px;
+      border: 1.5px solid #D1D5DB; border-radius: 8px;
+      font-size: 15px; font-family: inherit; color: var(--gray-800);
+      transition: border-color 0.2s; outline: none;
+      background: white;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--navy); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-submit {
+      width: 100%; padding: 16px;
+      background: var(--navy); color: white;
+      border: none; border-radius: 8px;
+      font-size: 16px; font-weight: 700; cursor: pointer;
+      transition: all 0.2s; font-family: inherit;
+    }
+    .form-submit:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(28,45,80,0.35); }
+    .form-note { font-size: 12px; color: var(--gray-400); text-align: center; margin-top: 12px; }
 
-/* status badge */
-.status-badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
-.status-active    { background: #fef3c7; color: #92400e; }
-.status-completed { background: #d1fae5; color: #065f46; }
-.status-planning  { background: #e0e7ff; color: #3730a3; }
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,0.7);
+      padding: 48px 5% 32px;
+    }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+    .footer-brand p { font-size: 14px; line-height: 1.7; margin-top: 16px; }
+    .footer-col h5 { font-size: 13px; font-weight: 700; color: white; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.6); text-decoration: none; margin-bottom: 8px; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--gold); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
 
-/* ── FORMS ── */
-.field { margin-bottom: 14px; }
-.field label { display: block; font-size: 11px; font-weight: 500; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; }
-.field input, .field select, .field textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--bg); transition: border-color 0.15s; -webkit-appearance: none; }
-.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
-.field textarea { resize: vertical; min-height: 70px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    /* ── FLOATING CTA ── */
+    .float-cta {
+      position: fixed; bottom: 28px; right: 28px; z-index: 99;
+      background: var(--gold); color: var(--navy);
+      padding: 14px 24px; border-radius: 50px;
+      font-weight: 700; font-size: 15px; text-decoration: none;
+      box-shadow: 0 6px 30px rgba(201,168,76,0.5);
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .float-cta:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(201,168,76,0.6); }
 
-/* ── CARD ── */
-.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-.card-title { font-weight: 600; font-size: 14px; }
-
-/* ── MODALS ── */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,22,18,0.55); z-index: 200; align-items: flex-end; justify-content: center; padding: 0; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--card); border-radius: 18px 18px 0 0; padding: 28px 24px 36px; width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; box-shadow: 0 -8px 40px rgba(0,0,0,0.18); animation: slideUp 0.22s ease; }
-@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
-.modal h2 { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: 400; margin-bottom: 18px; }
-.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
-
-/* ── LOGIN ── */
-#view-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--bg); }
-.login-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 380px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
-.login-logo { display: flex; align-items: baseline; gap: 8px; margin-bottom: 24px; }
-.login-logo .logo-title { font-family: 'Instrument Serif', serif; font-size: 22px; color: var(--text); }
-.login-tagline { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-.login-error { background: #fee2e2; color: #dc2626; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 14px; display: none; }
-.login-footer { font-size: 11px; color: var(--muted); margin-top: 20px; text-align: center; line-height: 1.5; }
-
-/* ── CLIENT VIEW ── */
-.client-hero { background: var(--surface); border-bottom: 1px solid var(--border); padding: 24px; }
-.client-hero-inner { max-width: 800px; margin: 0 auto; }
-.client-address { font-size: 13px; color: var(--muted); margin-top: 4px; }
-.client-content { max-width: 800px; margin: 0 auto; padding: 24px; }
-.contact-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.contact-box .label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px; }
-.contact-box .value { font-size: 14px; font-weight: 500; }
-
-/* ── ACCESS LOG TABLE ── */
-.log-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.log-table th { text-align: left; font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 0 10px 8px; border-bottom: 1px solid var(--border); }
-.log-table td { padding: 8px 10px; vertical-align: middle; }
-.log-table tr:not(:last-child) td { border-bottom: 1px solid #f0ebe3; }
-.log-source-ntfy  { background: #eff6ff; color: #1d4ed8; font-size: 9px; font-family: 'DM Mono', monospace; padding: 2px 6px; border-radius: 4px; }
-.log-source-local { background: var(--tag-bg); color: var(--muted); font-size: 9px; font-family: 'DM Mono', monospace; padding: 2px 6px; border-radius: 4px; }
-
-/* ── CODE TABLE ── */
-.code-row { display: flex; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; gap: 12px; flex-wrap: wrap; }
-.code-badge { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; background: var(--tag-bg); color: var(--text); padding: 4px 10px; border-radius: 6px; letter-spacing: .05em; }
-.code-info { flex: 1; min-width: 0; }
-.code-label { font-size: 13px; font-weight: 500; }
-.code-project { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-/* ── EMPTY ── */
-.empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
-.empty-state .icon { font-size: 36px; margin-bottom: 10px; }
-.empty-state h3 { font-family: 'Instrument Serif', serif; font-size: 18px; color: var(--text); font-weight: 400; margin-bottom: 6px; }
-.empty-state p { font-size: 13px; }
-.no-project-msg { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 48px 24px; text-align: center; color: var(--muted); }
-.no-project-msg .icon { font-size: 40px; }
-.no-project-msg h2 { font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--text); font-weight: 400; }
-
-/* ── SETTINGS ── */
-.settings-section { margin-bottom: 28px; }
-.settings-section h3 { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-.ntfy-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 14px; font-size: 13px; line-height: 1.6; margin-bottom: 14px; }
-.ntfy-box strong { color: #1d4ed8; }
-
-/* ── MISC ── */
-.info-chip { display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px; background: var(--tag-bg); color: var(--muted); padding: 3px 8px; border-radius: 4px; }
-.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
-.text-muted { color: var(--muted); font-size: 12px; }
-.export-banner { background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #92400e; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-/* ── PRINT ── */
-@media print {
-  header, .no-print { display: none !important; }
-  .client-content { padding: 0; max-width: 100%; }
-  body { background: white; }
-}
-
-/* ── MOBILE ── */
-@media (max-width: 640px) {
-  .layout { flex-direction: column; height: auto; min-height: calc(100vh - 49px); }
-  .sidebar { width: 100%; min-width: unset; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
-  .project-list { max-height: 180px; }
-  .sidebar-tabs .sidebar-tab span.tab-label { display: none; }
-  .main-header { padding: 14px 16px; }
-  .content-area { padding: 14px 16px; }
-  .stats-row { gap: 8px; }
-  .stat-box { padding: 8px 12px; }
-  .stat-value { font-size: 15px; }
-  .field-row { grid-template-columns: 1fr; }
-  header { padding: 12px 16px; }
-  .logo-title { font-size: 17px; }
-  .client-content { padding: 16px; }
-}
-</style>
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 4%; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 4% 60px; }
+      .hero::before { display: none; }
+      .why-grid { grid-template-columns: 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .form-row { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════
-     VIEW: LOGIN
-     ═══════════════════════════════════════════════ -->
-<div id="view-login">
-  <div class="login-card">
-    <div class="login-logo">
-      <span class="logo-title">Remodel Tracker</span>
-      <span class="logo-tag">PORTAL</span>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="36" r="26" stroke="#C9A84C" stroke-width="3" fill="none"/>
+      <polygon points="40,20 24,42 56,42" fill="#C9A84C"/>
+      <polygon points="52,36 44,46 60,46" fill="rgba(201,168,76,0.5)"/>
+      <line x1="18" y1="46" x2="62" y2="46" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M40 14 L41.5 17.5 L45 18 L42.5 20.5 L43 24 L40 22.5 L37 24 L37.5 20.5 L35 18 L38.5 17.5 Z" fill="#C9A84C"/>
+    </svg>
+    <div class="nav-logo-text">
+      <div class="brand">NOVA BUILD</div>
+      <div class="tagline">DESIGN · BUILD · REMODEL</div>
     </div>
-    <p class="login-tagline">Enter your access code to view your project status and payment history.</p>
-    <div id="login-error" class="login-error">Invalid access code. Please try again.</div>
-    <div class="field">
-      <label>Access Code</label>
-      <input id="loginCode" type="text" placeholder="e.g. SMITH2024" autocomplete="off"
-             style="font-family:'DM Mono',monospace;font-size:16px;letter-spacing:.06em;text-transform:uppercase"
-             onkeydown="if(event.key==='Enter')doLogin()">
+  </a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#process">Our Process</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+    <a href="tel:+12065550100" class="nav-cta">📞 Free Estimate</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+      Seattle's Trusted Remodel Experts
     </div>
-    <button class="btn btn-accent" style="width:100%;padding:12px;font-size:14px" onclick="doLogin()">
-      Enter Portal →
-    </button>
-    <div class="login-footer">Your contractor will provide your access code.<br>Contact them if you need help.</div>
+    <h1>Transform Your Home<br/>With <span>Nova Build</span></h1>
+    <p>From kitchen and bathroom remodels to full custom builds and ADUs — we deliver exceptional craftsmanship throughout the Greater Seattle area. Licensed, bonded & insured.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">
+        Get Your Free Estimate
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="tel:+12065550100" class="btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14z"/></svg>
+        Call Now
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">150+</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Years in Seattle</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Google Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Licensed & Insured in Washington State
+  </div>
+  <div class="trust-item">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    On-Time, On-Budget Delivery
+  </div>
+  <div class="trust-item">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    5-Year Workmanship Warranty
+  </div>
+  <div class="trust-item">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    Serving Greater Seattle Area
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     VIEW: CLIENT DASHBOARD
-     ═══════════════════════════════════════════════ -->
-<div id="view-client" style="display:none">
-  <header>
-    <div class="logo">
-      <span class="logo-title">Remodel Tracker</span>
-      <span class="logo-tag">PORTAL</span>
-    </div>
-    <div class="header-actions">
-      <div class="header-client-info" id="client-header-info"></div>
-      <button class="btn btn-ghost btn-sm no-print" onclick="doLogout()">Log Out</button>
-    </div>
-  </header>
-  <div id="client-body"></div>
-</div>
-
-<!-- ═══════════════════════════════════════════════
-     VIEW: ADMIN DASHBOARD
-     ═══════════════════════════════════════════════ -->
-<div id="view-admin" style="display:none">
-  <header>
-    <div class="logo">
-      <span class="logo-title">Remodel Tracker</span>
-      <span class="logo-tag green">ADMIN</span>
-    </div>
-    <div class="header-actions">
-      <button class="btn btn-ghost btn-sm" onclick="exportHTML()" title="Download updated HTML to re-upload">⬇ Export HTML</button>
-      <button class="btn btn-ghost btn-sm" onclick="doLogout()">Log Out</button>
-    </div>
-  </header>
-  <div class="layout">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-section-label" id="sidebar-label">Projects / Clients</div>
-        <button class="btn btn-accent btn-sm" style="width:100%" id="sidebar-action-btn" onclick="openProjectModal(null)">+ New Project</button>
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-label">What We Do</div>
+  <div class="section-title">Comprehensive Remodel Services</div>
+  <p class="section-sub">From initial design through final touches, we handle every detail so you don't have to.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </div>
-      <div class="project-list" id="admin-project-list"></div>
-      <div class="sidebar-tabs">
-        <div class="sidebar-tab active" data-tab="projects" onclick="setAdminTab('projects')">
-          <span class="tab-icon">📁</span>
-          <span class="tab-label">Projects</span>
+      <h3>Kitchen Remodels</h3>
+      <p>Custom cabinetry, countertops, and layouts designed around how you actually live and cook.</p>
+      <ul class="service-list">
+        <li>Custom cabinet design & install</li>
+        <li>Quartz & granite countertops</li>
+        <li>Kitchen layout reconfiguration</li>
+        <li>Appliance & lighting upgrades</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h7"/><circle cx="17.5" cy="17.5" r="3.5"/></svg>
+      </div>
+      <h3>Bathroom Remodels</h3>
+      <p>Spa-quality bathrooms built to last — from master suites to guest bath refreshes.</p>
+      <ul class="service-list">
+        <li>Tile showers & walk-in designs</li>
+        <li>Freestanding & built-in tubs</li>
+        <li>Vanity & fixture upgrades</li>
+        <li>Heated flooring systems</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <h3>ADU & Room Additions</h3>
+      <p>Add livable space and significant property value with a detached ADU or home addition.</p>
+      <ul class="service-list">
+        <li>Detached & attached ADUs</li>
+        <li>Garage conversions</li>
+        <li>Room additions & bump-outs</li>
+        <li>Permit navigation included</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2"><path d="M2 20h20M4 20V8l8-6 8 6v12"/></svg>
+      </div>
+      <h3>Whole Home Remodels</h3>
+      <p>Complete interior transformations — we coordinate every trade so the process is stress-free.</p>
+      <ul class="service-list">
+        <li>Full interior renovations</li>
+        <li>Open floor plan conversions</li>
+        <li>Flooring & paint throughout</li>
+        <li>Single point of contact</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Design Services</h3>
+      <p>In-house design consultation to bring your vision to life before a single nail is driven.</p>
+      <ul class="service-list">
+        <li>3D renderings & walkthroughs</li>
+        <li>Material & finish selections</li>
+        <li>Space planning & layout</li>
+        <li>Design-build coordination</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1C2D50" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <h3>Repairs & Upgrades</h3>
+      <p>Not ready for a full remodel? We handle targeted repairs, updates, and improvements.</p>
+      <ul class="service-list">
+        <li>Flooring installation & repair</li>
+        <li>Deck & outdoor living</li>
+        <li>Window & door replacement</li>
+        <li>Painting & trim work</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-us">
+  <div class="section-label">Why Nova Build</div>
+  <div class="section-title">The Seattle Remodeler<br/>You Can Actually Trust</div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <div>
+        <h4>Transparent Pricing</h4>
+        <p>Detailed written estimates with no hidden fees. You'll know exactly what you're paying for before work begins.</p>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <div>
+        <h4>Local Seattle Expertise</h4>
+        <p>We know Seattle's permit offices, weather considerations, and architectural styles inside and out.</p>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <div>
+        <h4>Dedicated Project Manager</h4>
+        <p>One person manages your project start to finish — always reachable, always accountable.</p>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <div>
+        <h4>Quality Craftsmanship Guaranteed</h4>
+        <p>Our 5-year workmanship warranty means we stand behind every project long after completion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="center">
+    <div class="section-label">How It Works</div>
+    <div class="section-title">Our Simple 4-Step Process</div>
+    <p class="section-sub">We make remodeling straightforward — no surprises, no runaround.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>Free Consultation</h4>
+      <p>We visit your home, listen to your vision, and assess the scope at no cost to you.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>Design & Estimate</h4>
+      <p>We create a detailed design plan and transparent fixed-price estimate for your approval.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>Build & Update</h4>
+      <p>Our crew gets to work with regular progress updates so you're always in the loop.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h4>Final Walkthrough</h4>
+      <p>We walk through every detail with you and don't consider the job done until you're delighted.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="reviews">
+  <div class="center">
+    <div class="section-label">Client Reviews</div>
+    <div class="section-title">What Seattle Homeowners Say</div>
+    <p class="section-sub">Over 150 projects and counting — here's what our clients think.</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Nova Build completely transformed our Bellevue kitchen. The project was finished on time and on budget — which honestly shocked us based on past contractor experiences. We couldn't be happier."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">JM</div>
+        <div>
+          <div class="reviewer-name">Jennifer M.</div>
+          <div class="reviewer-loc">Bellevue, WA · Kitchen Remodel</div>
         </div>
-        <div class="sidebar-tab" data-tab="codes" onclick="setAdminTab('codes')">
-          <span class="tab-icon">🔑</span>
-          <span class="tab-label">Codes</span>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"We hired Nova Build for our master bathroom and they knocked it out of the park. The tile work is immaculate and our project manager was responsive every single day. Highly recommend."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">RK</div>
+        <div>
+          <div class="reviewer-name">Ryan K.</div>
+          <div class="reviewer-loc">Kirkland, WA · Bathroom Remodel</div>
         </div>
-        <div class="sidebar-tab" data-tab="log" onclick="setAdminTab('log')">
-          <span class="tab-icon">📋</span>
-          <span class="tab-label">Log</span>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"They handled our ADU from permits to final inspection. The process was smooth and the finished unit rents for $2,400/month. Best investment we've made in our home."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">SL</div>
+        <div>
+          <div class="reviewer-name">Sarah L.</div>
+          <div class="reviewer-loc">Seattle, WA · ADU Build</div>
         </div>
-        <div class="sidebar-tab" data-tab="settings" onclick="setAdminTab('settings')">
-          <span class="tab-icon">⚙️</span>
-          <span class="tab-label">Settings</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <div class="section-label">Get In Touch</div>
+      <div class="section-title">Request Your<br/>Free Estimate</div>
+      <p class="section-sub">Tell us about your project and we'll schedule a free in-home consultation — no pressure, no obligation.</p>
+      <div class="contact-detail">
+        <div class="contact-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14z"/></svg>
+        </div>
+        <div>
+          <h4>Call or Text</h4>
+          <p>(206) 555-0100</p>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <h4>Email Us</h4>
+          <p>hello@novabuildseattle.com</p>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <h4>Service Area</h4>
+          <p>Seattle, Bellevue, Kirkland, Redmond, Bothell & surrounding areas</p>
         </div>
       </div>
     </div>
-    <!-- MAIN -->
-    <div class="main" id="admin-main"></div>
+    <div class="contact-form">
+      <div class="form-title">Get a Free Estimate</div>
+      <div class="form-sub">We typically respond within 1 business day.</div>
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="John" required />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Smith" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="(206) 555-0000" required />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="john@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>Project Type</label>
+          <select required>
+            <option value="">Select a service...</option>
+            <option>Kitchen Remodel</option>
+            <option>Bathroom Remodel</option>
+            <option>ADU / Room Addition</option>
+            <option>Whole Home Remodel</option>
+            <option>Repairs & Upgrades</option>
+            <option>Other / Not Sure</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell Us About Your Project</label>
+          <textarea placeholder="Describe your project, timeline, and any specific details..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send My Free Estimate Request →</button>
+        <p class="form-note">🔒 Your information is never shared. No spam, ever.</p>
+      </form>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- ═══════════════════════════════════════════════
-     MODALS
-     ═══════════════════════════════════════════════ -->
-
-<!-- Project Modal -->
-<div class="modal-overlay" id="modal-project">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <h2 id="modal-project-title">New Project</h2>
-    <input type="hidden" id="mp-id">
-    <div class="field"><label>Client Name *</label><input id="mp-client" placeholder="e.g. Johnson Family"></div>
-    <div class="field"><label>Property Address *</label><input id="mp-address" placeholder="e.g. 123 Oak St, Austin TX 78701"></div>
-    <div class="field-row">
-      <div class="field"><label>Job Type</label><input id="mp-type" placeholder="e.g. Kitchen Remodel"></div>
-      <div class="field">
-        <label>Status</label>
-        <select id="mp-status">
-          <option value="active">In Progress</option>
-          <option value="planning">Planning</option>
-          <option value="completed">Completed</option>
-        </select>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="40" height="40" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="36" r="26" stroke="#C9A84C" stroke-width="3" fill="none"/><polygon points="40,20 24,42 56,42" fill="#C9A84C"/><line x1="18" y1="46" x2="62" y2="46" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <div>
+          <div style="color:white;font-weight:800;font-size:18px;letter-spacing:1px;">NOVA BUILD</div>
+          <div style="color:#C9A84C;font-size:9px;letter-spacing:2.5px;">DESIGN · BUILD · REMODEL</div>
+        </div>
       </div>
+      <p style="margin-top:16px;">Seattle's trusted design-build-remodel contractor. Licensed, bonded, and insured in the state of Washington.</p>
+      <p style="margin-top:8px;">WA Contractor License #: NOVABLD123BC</p>
     </div>
-    <div class="field-row">
-      <div class="field"><label>Start Date</label><input id="mp-start" type="date"></div>
-      <div class="field"><label>Contract Amount ($)</label><input id="mp-contract" type="number" placeholder="0.00" step="0.01" min="0"></div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <a href="#services">Kitchen Remodels</a>
+      <a href="#services">Bathroom Remodels</a>
+      <a href="#services">ADU & Additions</a>
+      <a href="#services">Whole Home Remodels</a>
+      <a href="#services">Design Services</a>
     </div>
-    <div class="field"><label>Notes (shown to client)</label><textarea id="mp-notes" placeholder="Any notes visible to the client…"></textarea></div>
-    <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-project')">Cancel</button>
-      <button class="btn btn-accent" onclick="saveProject()">Save Project</button>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="#process">Our Process</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact Us</a>
+      <a href="#contact">Free Estimate</a>
+      <a href="#">Privacy Policy</a>
     </div>
   </div>
-</div>
+  <div class="footer-bottom">
+    <span>© 2025 Nova Build LLC · Seattle, WA · All rights reserved.</span>
+    <span>Serving Seattle · Bellevue · Kirkland · Redmond · Bothell</span>
+  </div>
+</footer>
 
-<!-- Payment Modal -->
-<div class="modal-overlay" id="modal-payment">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <h2 id="modal-payment-title">Add Payment</h2>
-    <input type="hidden" id="mpay-id">
-    <input type="hidden" id="mpay-proj-id">
-    <div class="field-row">
-      <div class="field"><label>Date *</label><input id="mpay-date" type="date"></div>
-      <div class="field"><label>Amount ($) *</label><input id="mpay-amount" type="number" placeholder="0.00" step="0.01" min="0"></div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Type</label>
-        <select id="mpay-type">
-          <option value="labor">Labor</option>
-          <option value="materials">Materials</option>
-          <option value="permit">Permit / Inspection</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Payment Method</label>
-        <select id="mpay-method">
-          <option value="Check">Check</option>
-          <option value="Zelle">Zelle</option>
-          <option value="Cash">Cash</option>
-          <option value="Credit Card">Credit Card</option>
-          <option value="Bank Transfer">Bank Transfer</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-    </div>
-    <div class="field"><label>Description *</label><input id="mpay-desc" placeholder="e.g. Framing and rough-in work completed"></div>
-    <div class="field"><label>Notes (optional)</label><input id="mpay-notes" placeholder="e.g. Check #1042"></div>
-    <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-payment')">Cancel</button>
-      <button class="btn btn-accent" onclick="savePayment()">Save Payment</button>
-    </div>
-  </div>
-</div>
-
-<!-- Code Modal -->
-<div class="modal-overlay" id="modal-code">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <h2 id="modal-code-title">New Access Code</h2>
-    <input type="hidden" id="mc-id">
-    <div class="field">
-      <label>Access Code *</label>
-      <input id="mc-code" placeholder="e.g. SMITH2024" style="font-family:'DM Mono',monospace;letter-spacing:.05em;text-transform:uppercase">
-    </div>
-    <div class="field"><label>Label / Note</label><input id="mc-label" placeholder="e.g. Johnson Family main code"></div>
-    <div class="field">
-      <label>Assign to Project</label>
-      <select id="mc-project"></select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-code')">Cancel</button>
-      <button class="btn btn-accent" onclick="saveCode()">Save Code</button>
-    </div>
-  </div>
-</div>
-
-<!-- Confirm Delete Modal -->
-<div class="modal-overlay" id="modal-confirm">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <h2>Confirm Delete</h2>
-    <p id="confirm-msg" style="font-size:14px;color:var(--muted);margin-bottom:20px"></p>
-    <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-confirm')">Cancel</button>
-      <button class="btn btn-accent" id="confirm-ok-btn">Delete</button>
-    </div>
-  </div>
-</div>
+<!-- FLOATING CTA -->
+<a href="#contact" class="float-cta">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.81 19.79 19.79 0 01.02 2.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14z"/></svg>
+  Free Estimate
+</a>
 
 <script>
-// ═══════════════════════════════════════════════════════
-//  EMBEDDED DATA  — edit defaults here, or use admin panel
-//  then click "Export HTML" to save & re-upload
-// ═══════════════════════════════════════════════════════
-// DATA_START
-const EMBEDDED_DATA = {
-  version: 1,
-  adminCode: "ADMIN2024",
-  ntfy: { enabled: false, channel: "" },
-  contractor: { name: "Your Name", phone: "", email: "", company: "" },
-  codes: [
-    { id: "c1", code: "DEMO2024", label: "Demo client code", projectId: "p1" }
-  ],
-  projects: [
-    {
-      id: "p1",
-      clientName: "Demo Client",
-      address: "123 Sample Street, Austin TX 78701",
-      type: "Kitchen Remodel",
-      status: "active",
-      startDate: "2025-01-15",
-      contractAmount: 45000,
-      notes: "Project is on schedule. Next phase begins after permit approval.",
-      payments: [
-        { id: "pay1", date: "2025-01-20", amount: 15000, type: "labor", method: "Check", description: "Initial deposit — demo & framing", notes: "Check #1001" },
-        { id: "pay2", date: "2025-02-10", amount: 8500,  type: "materials", method: "Zelle", description: "Cabinets and hardware", notes: "" },
-        { id: "pay3", date: "2025-03-05", amount: 4200,  type: "labor", method: "Check", description: "Electrical rough-in", notes: "Check #1018" },
-        { id: "pay4", date: "2025-03-20", amount: 350,   type: "permit", method: "Check", description: "City building permit fee", notes: "" }
-      ]
-    }
-  ]
-};
-// DATA_END
-
-// ═══════════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════════
-let S = {};          // main state
-let currentUser = null;   // { type: 'client'|'admin', code, projectId }
-let adminTab = 'projects';
-let adminProjectId = null;
-
-const LOG_KEY = 'remodelPortalLog_v1';
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem('remodelPortal_v2');
-    const stored = raw ? JSON.parse(raw) : null;
-    if (!stored || stored.version < EMBEDDED_DATA.version) {
-      S = deepCopy(EMBEDDED_DATA);
-    } else {
-      S = stored;
-    }
-  } catch(e) { S = deepCopy(EMBEDDED_DATA); }
-}
-
-function saveState() {
-  try { localStorage.setItem('remodelPortal_v2', JSON.stringify(S)); } catch(e) {}
-}
-
-function deepCopy(obj) { return JSON.parse(JSON.stringify(obj)); }
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function fmt$(n) { return '$' + (parseFloat(n)||0).toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2}); }
-function fmtDate(d) {
-  if (!d) return '—';
-  const [y,m,day] = d.split('-');
-  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1]+' '+parseInt(day)+', '+y;
-}
-
-// ═══════════════════════════════════════════════════════
-//  AUTH
-// ═══════════════════════════════════════════════════════
-function doLogin() {
-  const raw = document.getElementById('loginCode').value.trim().toUpperCase();
-  document.getElementById('login-error').style.display = 'none';
-  if (!raw) return;
-
-  // Admin?
-  if (raw === S.adminCode.toUpperCase()) {
-    currentUser = { type: 'admin', code: raw };
-    showView('admin');
-    renderAdmin();
-    return;
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '✓ Request Sent! We\'ll be in touch soon.';
+    btn.style.background = '#22C55E';
+    btn.disabled = true;
   }
 
-  // Client code?
-  const codeEntry = S.codes.find(c => c.code.toUpperCase() === raw);
-  if (codeEntry) {
-    const project = S.projects.find(p => p.id === codeEntry.projectId);
-    if (project) {
-      currentUser = { type: 'client', code: raw, codeEntry, project };
-      logAccess(codeEntry, project);
-      showView('client');
-      renderClient();
-      return;
-    }
-  }
-
-  document.getElementById('login-error').style.display = 'block';
-}
-
-function doLogout() {
-  currentUser = null;
-  document.getElementById('loginCode').value = '';
-  document.getElementById('login-error').style.display = 'none';
-  showView('login');
-}
-
-function showView(name) {
-  document.getElementById('view-login').style.display  = name === 'login'  ? '' : 'none';
-  document.getElementById('view-client').style.display = name === 'client' ? '' : 'none';
-  document.getElementById('view-admin').style.display  = name === 'admin'  ? '' : 'none';
-  window.scrollTo(0, 0);
-}
-
-// ═══════════════════════════════════════════════════════
-//  ACCESS LOG
-// ═══════════════════════════════════════════════════════
-function logAccess(codeEntry, project) {
-  const entry = {
-    code: codeEntry.code,
-    label: codeEntry.label || '',
-    clientName: project.clientName,
-    projectId: project.id,
-    address: project.address,
-    timestamp: new Date().toISOString(),
-    source: 'local'
-  };
-  try {
-    const existing = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
-    existing.unshift(entry);
-    localStorage.setItem(LOG_KEY, JSON.stringify(existing.slice(0, 200)));
-  } catch(e) {}
-
-  // ntfy.sh push notification
-  if (S.ntfy.enabled && S.ntfy.channel) {
-    const msg = `Login: Code "${entry.code}" — ${entry.clientName} (${entry.address}) — ${new Date().toLocaleString()}`;
-    fetch(`https://ntfy.sh/${encodeURIComponent(S.ntfy.channel)}`, {
-      method: 'POST',
-      headers: { 'Title': 'Remodel Portal Login', 'Priority': 'default', 'Tags': 'key' },
-      body: msg
-    }).catch(() => {});
-  }
-}
-
-function getLocalLog() {
-  try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch(e) { return []; }
-}
-
-async function fetchNtfyLog() {
-  if (!S.ntfy.enabled || !S.ntfy.channel) return [];
-  try {
-    const res = await fetch(`https://ntfy.sh/${encodeURIComponent(S.ntfy.channel)}/json?poll=1&since=2592000`);
-    const text = await res.text();
-    const msgs = text.trim().split('\n').filter(Boolean).map(l => { try { return JSON.parse(l); } catch(e) { return null; } }).filter(Boolean);
-    return msgs.reverse().map(m => ({
-      code: '—',
-      clientName: m.message || m.title || '—',
-      timestamp: new Date(m.time * 1000).toISOString(),
-      source: 'ntfy',
-      raw: m.message
-    }));
-  } catch(e) { return []; }
-}
-
-// ═══════════════════════════════════════════════════════
-//  CLIENT VIEW
-// ═══════════════════════════════════════════════════════
-function renderClient() {
-  const p = currentUser.project;
-  const totalPaid = p.payments.reduce((s,pay) => s + pay.amount, 0);
-  const balance = (p.contractAmount || 0) - totalPaid;
-  const pct = p.contractAmount > 0 ? Math.min(100, Math.round(totalPaid / p.contractAmount * 100)) : 0;
-
-  document.getElementById('client-header-info').innerHTML =
-    `<div>${esc(p.clientName)}</div><div>${esc(p.address)}</div>`;
-
-  const statusMap = { active: ['In Progress','status-active'], completed: ['Completed','status-completed'], planning: ['Planning','status-planning'] };
-  const [statusLabel, statusClass] = statusMap[p.status] || ['—',''];
-
-  const payRows = [...p.payments].sort((a,b) => b.date.localeCompare(a.date)).map(pay => `
-    <tr>
-      <td style="color:var(--muted)">${fmtDate(pay.date)}</td>
-      <td><span class="type-badge type-${pay.type}">${{labor:'Labor',materials:'Materials',permit:'Permit',other:'Other'}[pay.type]||pay.type}</span></td>
-      <td>${esc(pay.description)}${pay.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(pay.notes)}</div>` : ''}</td>
-      <td><span class="info-chip">${esc(pay.method)}</span></td>
-      <td>${fmt$(pay.amount)}</td>
-    </tr>`).join('');
-
-  // labor vs materials breakdown
-  const laborTotal = p.payments.filter(pay=>pay.type==='labor').reduce((s,pay)=>s+pay.amount,0);
-  const matTotal   = p.payments.filter(pay=>pay.type==='materials').reduce((s,pay)=>s+pay.amount,0);
-  const permitTotal= p.payments.filter(pay=>pay.type==='permit').reduce((s,pay)=>s+pay.amount,0);
-
-  const contInfo = S.contractor;
-  const hasContact = contInfo.phone || contInfo.email;
-
-  document.getElementById('client-body').innerHTML = `
-    <div class="client-hero">
-      <div class="client-hero-inner">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
-          <div>
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-              <span class="status-badge ${statusClass}">${statusLabel}</span>
-              <span style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace">${esc(p.type||'Remodel')}</span>
-            </div>
-            <div class="project-h1" style="margin-top:8px">${esc(p.clientName)}</div>
-            <div class="client-address">${esc(p.address)}</div>
-            ${p.startDate ? `<div style="font-size:11px;color:var(--muted);margin-top:4px">Started: ${fmtDate(p.startDate)}</div>` : ''}
-          </div>
-          <button class="btn btn-outline btn-sm no-print" onclick="window.print()">🖨 Print</button>
-        </div>
-        <div class="stats-row">
-          ${p.contractAmount > 0 ? `<div class="stat-box"><div class="stat-label">Contract</div><div class="stat-value">${fmt$(p.contractAmount)}</div></div>` : ''}
-          <div class="stat-box"><div class="stat-label">Total Paid</div><div class="stat-value green">${fmt$(totalPaid)}</div></div>
-          ${p.contractAmount > 0 ? `<div class="stat-box"><div class="stat-label">Balance</div><div class="stat-value ${balance>0?'red':'green'}">${fmt$(balance)}</div></div>` : ''}
-          <div class="stat-box"><div class="stat-label">Payments</div><div class="stat-value">${p.payments.length}</div></div>
-        </div>
-        ${p.contractAmount > 0 ? `
-        <div style="margin-top:14px">
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;font-family:'DM Mono',monospace">
-            <span>PAID ${pct}%</span><span>${fmt$(totalPaid)} of ${fmt$(p.contractAmount)}</span>
-          </div>
-          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-        </div>` : ''}
-      </div>
-    </div>
-
-    <div class="client-content">
-      ${p.notes ? `<div class="card" style="background:#fdfaf4;border-color:var(--border)"><div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Note from Contractor</div><div style="font-size:13px;line-height:1.6">${esc(p.notes)}</div></div>` : ''}
-
-      ${(laborTotal > 0 || matTotal > 0 || permitTotal > 0) ? `
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
-        ${laborTotal   > 0 ? `<div class="stat-box" style="flex:none;padding:8px 14px"><div class="stat-label">Labor</div><div style="font-family:'DM Mono',monospace;font-size:14px;color:#1d4ed8">${fmt$(laborTotal)}</div></div>` : ''}
-        ${matTotal     > 0 ? `<div class="stat-box" style="flex:none;padding:8px 14px"><div class="stat-label">Materials</div><div style="font-family:'DM Mono',monospace;font-size:14px;color:#92400e">${fmt$(matTotal)}</div></div>` : ''}
-        ${permitTotal  > 0 ? `<div class="stat-box" style="flex:none;padding:8px 14px"><div class="stat-label">Permits</div><div style="font-family:'DM Mono',monospace;font-size:14px;color:#065f46">${fmt$(permitTotal)}</div></div>` : ''}
-      </div>` : ''}
-
-      <div class="section-label">Payment History (${p.payments.length})</div>
-      ${p.payments.length === 0
-        ? `<div class="empty-state"><div class="icon">📭</div><h3>No payments recorded yet</h3><p>Your contractor will add payments here as the project progresses.</p></div>`
-        : `<div class="table-wrap"><table class="payment-table">
-            <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Method</th><th style="text-align:right">Amount</th></tr></thead>
-            <tbody>${payRows}</tbody>
-            <tfoot><tr>
-              <td colspan="4" style="padding:12px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;border-top:2px solid var(--border)">Total Paid</td>
-              <td style="padding:12px 10px;text-align:right;font-family:'DM Mono',monospace;font-weight:500;font-size:15px;border-top:2px solid var(--border);color:var(--accent2)">${fmt$(totalPaid)}</td>
-            </tr></tfoot>
-          </table></div>`
-      }
-
-      ${hasContact ? `
-      <div style="margin-top:24px">
-        <div class="section-label">Contact Your Contractor</div>
-        <div class="contact-box">
-          <div>
-            <div class="label">Contractor</div>
-            <div class="value">${esc(contInfo.company || contInfo.name || '—')}</div>
-          </div>
-          ${contInfo.phone ? `<div><div class="label">Phone</div><div class="value"><a href="tel:${esc(contInfo.phone)}" style="color:var(--text);text-decoration:none">${esc(contInfo.phone)}</a></div></div>` : ''}
-          ${contInfo.email ? `<div><div class="label">Email</div><div class="value"><a href="mailto:${esc(contInfo.email)}" style="color:var(--accent)">${esc(contInfo.email)}</a></div></div>` : ''}
-        </div>
-      </div>` : ''}
-
-      <div style="margin-top:28px;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);text-align:center">
-        This is a live summary of your project payments. All amounts in USD.
-      </div>
-    </div>`;
-}
-
-// ═══════════════════════════════════════════════════════
-//  ADMIN VIEW
-// ═══════════════════════════════════════════════════════
-function renderAdmin() {
-  renderAdminSidebar();
-  renderAdminMain();
-}
-
-function setAdminTab(tab) {
-  adminTab = tab;
-  document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  const isProjects = tab === 'projects';
-  document.getElementById('sidebar-label').textContent    = isProjects ? 'Projects / Clients' : {codes:'Access Codes',log:'Access Log',settings:'Settings'}[tab];
-  document.getElementById('admin-project-list').style.display = isProjects ? '' : 'none';
-  document.getElementById('sidebar-action-btn').style.display = isProjects ? '' : 'none';
-  renderAdminMain();
-}
-
-function renderAdminSidebar() {
-  const list = document.getElementById('admin-project-list');
-  if (!S.projects.length) {
-    list.innerHTML = `<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">No projects yet</div>`;
-    return;
-  }
-  list.innerHTML = S.projects.map(p => {
-    const totalPaid = p.payments.reduce((s,pay)=>s+pay.amount,0);
-    const statusMap = {active:'🟡',completed:'🟢',planning:'🔵'};
-    return `
-    <div class="project-item ${p.id===adminProjectId?'active':''}" onclick="selectAdminProject('${p.id}')">
-      <div class="project-name">${statusMap[p.status]||'⚪'} ${esc(p.clientName)}</div>
-      <div class="project-meta">
-        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px">${esc(p.type||'Remodel')}</span>
-        <span class="project-amount">${fmt$(totalPaid)}</span>
-      </div>
-      <div style="font-size:10px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.address)}</div>
-    </div>`;
-  }).join('');
-}
-
-function selectAdminProject(id) {
-  adminProjectId = id;
-  adminTab = 'projects';
-  document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'projects'));
-  document.getElementById('admin-project-list').style.display = '';
-  document.getElementById('sidebar-action-btn').style.display = '';
-  renderAdminSidebar();
-  renderAdminMain();
-}
-
-function renderAdminMain() {
-  const main = document.getElementById('admin-main');
-  if (adminTab === 'projects') { renderAdminProjects(main); return; }
-  if (adminTab === 'codes')    { renderAdminCodes(main); return; }
-  if (adminTab === 'log')      { renderAdminLog(main); return; }
-  if (adminTab === 'settings') { renderAdminSettings(main); return; }
-}
-
-/* ── Projects tab ── */
-function renderAdminProjects(main) {
-  if (!adminProjectId && S.projects.length > 0) adminProjectId = S.projects[0].id;
-  const p = S.projects.find(pr => pr.id === adminProjectId);
-  if (!p) {
-    main.innerHTML = `<div class="no-project-msg"><div class="icon">📁</div><h2>Select a project</h2><p>Choose a project from the sidebar or create a new one.</p><button class="btn btn-accent" style="margin-top:12px" onclick="openProjectModal(null)">+ New Project</button></div>`;
-    return;
-  }
-
-  const totalPaid = p.payments.reduce((s,pay)=>s+pay.amount,0);
-  const balance = (p.contractAmount||0) - totalPaid;
-  const statusMap = { active: ['In Progress','status-active'], completed: ['Completed','status-completed'], planning: ['Planning','status-planning'] };
-  const [statusLabel, statusClass] = statusMap[p.status] || ['—',''];
-
-  const payRows = [...p.payments].sort((a,b) => b.date.localeCompare(a.date)).map(pay => `
-    <tr>
-      <td style="color:var(--muted);white-space:nowrap">${fmtDate(pay.date)}</td>
-      <td><span class="type-badge type-${pay.type}">${{labor:'Labor',materials:'Materials',permit:'Permit',other:'Other'}[pay.type]||pay.type}</span></td>
-      <td>${esc(pay.description)}${pay.notes?`<div style="font-size:11px;color:var(--muted)">${esc(pay.notes)}</div>`:''}</td>
-      <td><span class="info-chip">${esc(pay.method)}</span></td>
-      <td>${fmt$(pay.amount)}</td>
-      <td><div class="payment-actions">
-        <button class="btn btn-outline btn-sm" style="padding:4px 8px;font-size:11px" onclick="openPaymentModal('${p.id}','${pay.id}')">Edit</button>
-        <button class="btn-danger" style="font-size:11px;padding:4px 8px" onclick="confirmDelete('payment','${p.id}','${pay.id}')">Del</button>
-      </div></td>
-    </tr>`).join('');
-
-  main.innerHTML = `
-    <div class="main-header">
-      <div class="main-header-top">
-        <div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <span class="status-badge ${statusClass}">${statusLabel}</span>
-            <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace">${esc(p.type||'Remodel')}</span>
-          </div>
-          <div class="project-h1" style="margin-top:6px">${esc(p.clientName)}</div>
-          <div class="project-sub">${esc(p.address)}${p.startDate?` · Started ${fmtDate(p.startDate)}`:''}</div>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0">
-          <button class="btn btn-outline btn-sm" onclick="openProjectModal('${p.id}')">Edit Project</button>
-          <button class="btn btn-accent btn-sm" onclick="openPaymentModal('${p.id}',null)">+ Add Payment</button>
-          <button class="btn-danger" style="font-size:12px;padding:6px 10px" onclick="confirmDelete('project','${p.id}',null)">Delete</button>
-        </div>
-      </div>
-      <div class="stats-row">
-        ${p.contractAmount>0?`<div class="stat-box"><div class="stat-label">Contract</div><div class="stat-value">${fmt$(p.contractAmount)}</div></div>`:''}
-        <div class="stat-box"><div class="stat-label">Total Paid</div><div class="stat-value green">${fmt$(totalPaid)}</div></div>
-        ${p.contractAmount>0?`<div class="stat-box"><div class="stat-label">Balance</div><div class="stat-value ${balance>0?'red':'green'}">${fmt$(balance)}</div></div>`:''}
-        <div class="stat-box"><div class="stat-label">Payments</div><div class="stat-value">${p.payments.length}</div></div>
-      </div>
-    </div>
-    <div class="content-area">
-      <div class="section-label">Payment History</div>
-      ${p.payments.length === 0
-        ? `<div class="empty-state"><div class="icon">📭</div><h3>No payments yet</h3><p>Click "+ Add Payment" to record the first payment.</p></div>`
-        : `<div class="table-wrap"><table class="payment-table">
-            <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Method</th><th style="text-align:right">Amount</th><th></th></tr></thead>
-            <tbody>${payRows}</tbody>
-            <tfoot><tr>
-              <td colspan="4" style="padding:10px;font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;color:var(--muted);border-top:2px solid var(--border)">Total Paid</td>
-              <td style="padding:10px;text-align:right;font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--accent2);border-top:2px solid var(--border)">${fmt$(totalPaid)}</td>
-              <td style="border-top:2px solid var(--border)"></td>
-            </tr></tfoot>
-          </table></div>`
-      }
-      ${p.notes?`<div class="card" style="margin-top:16px"><div class="stat-label" style="margin-bottom:6px">Client-Visible Notes</div><div style="font-size:13px">${esc(p.notes)}</div></div>`:''}
-    </div>`;
-}
-
-/* ── Codes tab ── */
-function renderAdminCodes(main) {
-  const rows = S.codes.map(c => {
-    const proj = S.projects.find(p=>p.id===c.projectId);
-    return `<div class="code-row">
-      <span class="code-badge">${esc(c.code)}</span>
-      <div class="code-info">
-        <div class="code-label">${esc(c.label||'—')}</div>
-        <div class="code-project">→ ${proj ? esc(proj.clientName)+' · '+esc(proj.address) : '<span style="color:var(--accent)">No project assigned</span>'}</div>
-      </div>
-      <div style="display:flex;gap:6px;flex-shrink:0">
-        <button class="btn btn-outline btn-sm" onclick="openCodeModal('${c.id}')">Edit</button>
-        <button class="btn-danger" onclick="confirmDelete('code',null,'${c.id}')">Del</button>
-      </div>
-    </div>`;
-  }).join('');
-
-  main.innerHTML = `
-    <div class="main-header">
-      <div class="main-header-top">
-        <div><div class="project-h1">Access Codes</div><div class="project-sub">Manage client login codes — each code grants access to one project</div></div>
-        <button class="btn btn-accent btn-sm" onclick="openCodeModal(null)">+ New Code</button>
-      </div>
-    </div>
-    <div class="content-area">
-      <div class="section-label">Active Codes (${S.codes.length})</div>
-      ${S.codes.length === 0
-        ? `<div class="empty-state"><div class="icon">🔑</div><h3>No codes yet</h3><p>Create a code for each client so they can log in and view their project.</p></div>`
-        : rows
-      }
-    </div>`;
-}
-
-/* ── Log tab ── */
-async function renderAdminLog(main) {
-  const localLog = getLocalLog();
-  const ntfyEnabled = S.ntfy.enabled && S.ntfy.channel;
-
-  main.innerHTML = `
-    <div class="main-header">
-      <div class="main-header-top">
-        <div><div class="project-h1">Access Log</div>
-          <div class="project-sub">Track who has viewed their project portal</div></div>
-        ${ntfyEnabled ? `<button class="btn btn-outline btn-sm" onclick="refreshLog()">↺ Refresh</button>` : ''}
-      </div>
-    </div>
-    <div class="content-area">
-      ${!ntfyEnabled ? `<div class="ntfy-box"><strong>💡 Enable ntfy.sh for real-time cross-device logging.</strong> Without it, this log only shows logins from <em>this browser</em>. Configure it in the Settings tab.</div>` : ''}
-      <div class="section-label">Login History</div>
-      <div id="log-table-area">
-        ${renderLogTable(localLog, [])}
-      </div>
-    </div>`;
-
-  if (ntfyEnabled) {
-    document.getElementById('log-table-area').innerHTML = '<div style="padding:16px;text-align:center;color:var(--muted);font-size:13px">Loading ntfy.sh log…</div>';
-    const ntfyLog = await fetchNtfyLog();
-    document.getElementById('log-table-area').innerHTML = renderLogTable(localLog, ntfyLog);
-  }
-}
-
-function renderLogTable(localLog, ntfyLog) {
-  const combined = [
-    ...localLog.map(e => ({...e, source:'local'})),
-    ...ntfyLog.map(e  => ({...e, source:'ntfy'}))
-  ].sort((a,b) => b.timestamp.localeCompare(a.timestamp)).slice(0,100);
-
-  if (!combined.length) return `<div class="empty-state"><div class="icon">📋</div><h3>No logins recorded yet</h3><p>Logins will appear here once clients use their access codes.</p></div>`;
-  const rows = combined.map(e => `
-    <tr>
-      <td style="white-space:nowrap;color:var(--muted)">${new Date(e.timestamp).toLocaleString()}</td>
-      <td><span class="log-source-${e.source}">${e.source==='ntfy'?'ntfy.sh':'local'}</span></td>
-      <td>${e.source==='ntfy' ? esc(e.raw||'—') : `<strong>${esc(e.code)}</strong> — ${esc(e.clientName)}`}</td>
-      <td style="color:var(--muted);font-size:11px">${e.source==='local'?esc(e.address||''):'—'}</td>
-    </tr>`).join('');
-  return `<div class="table-wrap"><table class="log-table">
-    <thead><tr><th>Time</th><th>Source</th><th>Details</th><th>Address</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table></div>`;
-}
-
-function refreshLog() { renderAdminLog(document.getElementById('admin-main')); }
-
-/* ── Settings tab ── */
-function renderAdminSettings(main) {
-  const c = S.contractor;
-  main.innerHTML = `
-    <div class="main-header">
-      <div class="project-h1">Settings</div>
-      <div class="project-sub">Configure your portal — remember to Export HTML after saving</div>
-    </div>
-    <div class="content-area">
-      <div class="export-banner">⬇ After making any changes, click <strong style="margin:0 4px">Export HTML</strong> in the header to download the updated file and re-upload it to your website.</div>
-
-      <div class="settings-section">
-        <h3>Admin Access</h3>
-        <div class="field-row">
-          <div class="field"><label>Admin Code</label><input id="set-admin-code" value="${esc(S.adminCode)}" style="font-family:'DM Mono',monospace"></div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <h3>Contractor Info (shown to clients)</h3>
-        <div class="field-row">
-          <div class="field"><label>Your Name</label><input id="set-name" value="${esc(c.name||'')}"></div>
-          <div class="field"><label>Company Name</label><input id="set-company" value="${esc(c.company||'')}"></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label>Phone</label><input id="set-phone" value="${esc(c.phone||'')}" placeholder="e.g. (512) 555-1234"></div>
-          <div class="field"><label>Email</label><input id="set-email" value="${esc(c.email||'')}" placeholder="e.g. you@email.com"></div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <h3>ntfy.sh Login Notifications (free push alerts)</h3>
-        <div class="ntfy-box">
-          <strong>How to set up (2 minutes):</strong><br>
-          1. Download the free <strong>ntfy</strong> app on your phone (iOS/Android)<br>
-          2. Choose a unique channel name, e.g. <code style="background:white;padding:1px 5px;border-radius:3px">myremodel-alerts-2024</code><br>
-          3. Subscribe to that channel in the ntfy app<br>
-          4. Enter the same name below — you'll get a push alert every time a client logs in!
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label>ntfy Channel Name</label>
-            <input id="set-ntfy-channel" value="${esc(S.ntfy.channel||'')}" placeholder="e.g. myremodel-alerts-2024">
-          </div>
-          <div class="field">
-            <label>Enable Notifications</label>
-            <select id="set-ntfy-enabled">
-              <option value="true"  ${S.ntfy.enabled?'selected':''}>Enabled</option>
-              <option value="false" ${!S.ntfy.enabled?'selected':''}>Disabled</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn btn-accent" onclick="saveSettings()">Save Settings</button>
-      <span id="settings-saved" style="display:none;margin-left:12px;font-size:13px;color:var(--accent2)">✓ Saved — don't forget to Export HTML!</span>
-    </div>`;
-}
-
-function saveSettings() {
-  S.adminCode         = document.getElementById('set-admin-code').value.trim() || 'ADMIN2024';
-  S.contractor.name   = document.getElementById('set-name').value.trim();
-  S.contractor.company= document.getElementById('set-company').value.trim();
-  S.contractor.phone  = document.getElementById('set-phone').value.trim();
-  S.contractor.email  = document.getElementById('set-email').value.trim();
-  S.ntfy.channel      = document.getElementById('set-ntfy-channel').value.trim();
-  S.ntfy.enabled      = document.getElementById('set-ntfy-enabled').value === 'true';
-  saveState();
-  const msg = document.getElementById('settings-saved');
-  msg.style.display = 'inline';
-  setTimeout(() => { msg.style.display = 'none'; }, 4000);
-}
-
-// ═══════════════════════════════════════════════════════
-//  MODALS — Project
-// ═══════════════════════════════════════════════════════
-function openProjectModal(id) {
-  const p = id ? S.projects.find(pr => pr.id === id) : null;
-  document.getElementById('modal-project-title').textContent = p ? 'Edit Project' : 'New Project';
-  document.getElementById('mp-id').value      = p ? p.id : '';
-  document.getElementById('mp-client').value  = p ? p.clientName : '';
-  document.getElementById('mp-address').value = p ? p.address : '';
-  document.getElementById('mp-type').value    = p ? p.type : '';
-  document.getElementById('mp-status').value  = p ? p.status : 'active';
-  document.getElementById('mp-start').value   = p ? p.startDate : new Date().toISOString().split('T')[0];
-  document.getElementById('mp-contract').value= p ? (p.contractAmount||'') : '';
-  document.getElementById('mp-notes').value   = p ? (p.notes||'') : '';
-  openModal('modal-project');
-}
-
-function saveProject() {
-  const client  = document.getElementById('mp-client').value.trim();
-  const address = document.getElementById('mp-address').value.trim();
-  if (!client)  { document.getElementById('mp-client').focus(); return; }
-  if (!address) { document.getElementById('mp-address').focus(); return; }
-  const id = document.getElementById('mp-id').value;
-  const data = {
-    clientName: client, address,
-    type:     document.getElementById('mp-type').value.trim(),
-    status:   document.getElementById('mp-status').value,
-    startDate:document.getElementById('mp-start').value,
-    contractAmount: parseFloat(document.getElementById('mp-contract').value) || 0,
-    notes:    document.getElementById('mp-notes').value.trim()
-  };
-  if (id) {
-    const idx = S.projects.findIndex(p => p.id === id);
-    if (idx >= 0) S.projects[idx] = { ...S.projects[idx], ...data };
-  } else {
-    const np = { id: uid(), ...data, payments: [] };
-    S.projects.push(np);
-    adminProjectId = np.id;
-  }
-  saveState(); closeModal('modal-project'); renderAdmin();
-}
-
-// ═══════════════════════════════════════════════════════
-//  MODALS — Payment
-// ═══════════════════════════════════════════════════════
-function openPaymentModal(projId, payId) {
-  const pay = payId ? S.projects.find(p=>p.id===projId)?.payments.find(pay=>pay.id===payId) : null;
-  document.getElementById('modal-payment-title').textContent = pay ? 'Edit Payment' : 'Add Payment';
-  document.getElementById('mpay-id').value     = pay ? pay.id : '';
-  document.getElementById('mpay-proj-id').value= projId;
-  document.getElementById('mpay-date').value   = pay ? pay.date : new Date().toISOString().split('T')[0];
-  document.getElementById('mpay-amount').value = pay ? pay.amount : '';
-  document.getElementById('mpay-type').value   = pay ? pay.type : 'labor';
-  document.getElementById('mpay-method').value = pay ? pay.method : 'Check';
-  document.getElementById('mpay-desc').value   = pay ? pay.description : '';
-  document.getElementById('mpay-notes').value  = pay ? (pay.notes||'') : '';
-  openModal('modal-payment');
-}
-
-function savePayment() {
-  const amount = parseFloat(document.getElementById('mpay-amount').value);
-  const desc   = document.getElementById('mpay-desc').value.trim();
-  if (!amount || amount <= 0) { document.getElementById('mpay-amount').focus(); return; }
-  if (!desc) { document.getElementById('mpay-desc').focus(); return; }
-  const projId = document.getElementById('mpay-proj-id').value;
-  const payId  = document.getElementById('mpay-id').value;
-  const proj   = S.projects.find(p => p.id === projId);
-  if (!proj) return;
-  const data = {
-    date:        document.getElementById('mpay-date').value,
-    amount,
-    type:        document.getElementById('mpay-type').value,
-    method:      document.getElementById('mpay-method').value,
-    description: desc,
-    notes:       document.getElementById('mpay-notes').value.trim()
-  };
-  if (payId) {
-    const idx = proj.payments.findIndex(p => p.id === payId);
-    if (idx >= 0) proj.payments[idx] = { ...proj.payments[idx], ...data };
-  } else {
-    proj.payments.push({ id: uid(), ...data });
-  }
-  saveState(); closeModal('modal-payment'); renderAdmin();
-}
-
-// ═══════════════════════════════════════════════════════
-//  MODALS — Code
-// ═══════════════════════════════════════════════════════
-function openCodeModal(id) {
-  const c = id ? S.codes.find(x => x.id === id) : null;
-  document.getElementById('modal-code-title').textContent = c ? 'Edit Access Code' : 'New Access Code';
-  document.getElementById('mc-id').value      = c ? c.id : '';
-  document.getElementById('mc-code').value    = c ? c.code : '';
-  document.getElementById('mc-label').value   = c ? (c.label||'') : '';
-  // populate project select
-  const sel = document.getElementById('mc-project');
-  sel.innerHTML = '<option value="">— No project —</option>' +
-    S.projects.map(p => `<option value="${p.id}" ${c&&c.projectId===p.id?'selected':''}>${esc(p.clientName)} — ${esc(p.address)}</option>`).join('');
-  openModal('modal-code');
-}
-
-function saveCode() {
-  const code = document.getElementById('mc-code').value.trim().toUpperCase();
-  if (!code) { document.getElementById('mc-code').focus(); return; }
-  // check for duplicate
-  const id = document.getElementById('mc-id').value;
-  const dup = S.codes.find(c => c.code === code && c.id !== id);
-  if (dup) { alert(`Code "${code}" already exists.`); return; }
-  const data = { code, label: document.getElementById('mc-label').value.trim(), projectId: document.getElementById('mc-project').value };
-  if (id) {
-    const idx = S.codes.findIndex(c => c.id === id);
-    if (idx >= 0) S.codes[idx] = { ...S.codes[idx], ...data };
-  } else {
-    S.codes.push({ id: uid(), ...data });
-  }
-  saveState(); closeModal('modal-code'); renderAdmin();
-}
-
-// ═══════════════════════════════════════════════════════
-//  DELETE CONFIRM
-// ═══════════════════════════════════════════════════════
-function confirmDelete(type, projId, itemId) {
-  let msg = '';
-  if (type === 'project') {
-    const p = S.projects.find(x => x.id === projId);
-    msg = `Delete project "${p?.clientName}"? This will also remove all ${p?.payments.length} payment records.`;
-  } else if (type === 'payment') {
-    const pay = S.projects.find(x=>x.id===projId)?.payments.find(p=>p.id===itemId);
-    msg = `Delete payment "${pay?.description}" (${fmt$(pay?.amount)})?`;
-  } else if (type === 'code') {
-    const c = S.codes.find(x => x.id === itemId);
-    msg = `Delete access code "${c?.code}"? The client using this code will no longer be able to log in.`;
-  }
-  document.getElementById('confirm-msg').textContent = msg;
-  document.getElementById('confirm-ok-btn').onclick = () => {
-    if (type === 'project') {
-      S.projects = S.projects.filter(p => p.id !== projId);
-      if (adminProjectId === projId) adminProjectId = S.projects[0]?.id || null;
-    } else if (type === 'payment') {
-      const p = S.projects.find(x => x.id === projId);
-      if (p) p.payments = p.payments.filter(pay => pay.id !== itemId);
-    } else if (type === 'code') {
-      S.codes = S.codes.filter(c => c.id !== itemId);
-    }
-    saveState(); closeModal('modal-confirm'); renderAdmin();
-  };
-  openModal('modal-confirm');
-}
-
-// ═══════════════════════════════════════════════════════
-//  MODAL HELPERS
-// ═══════════════════════════════════════════════════════
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(m =>
-  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); })
-);
-
-// ═══════════════════════════════════════════════════════
-//  EXPORT HTML
-// ═══════════════════════════════════════════════════════
-function exportHTML() {
-  S.version = (S.version || 1) + 1;
-  saveState();
-  const exportData = deepCopy(S);
-  const newDataStr = `// DATA_START\nconst EMBEDDED_DATA = ${JSON.stringify(exportData, null, 2)};\n// DATA_END`;
-  let html = document.documentElement.outerHTML;
-  html = html.replace(/\/\/ DATA_START[\s\S]*?\/\/ DATA_END/, newDataStr);
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'remodel-invoice-portal.html';
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-// ═══════════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════════
-loadState();
-showView('login');
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
 </script>
+
 </body>
 </html>

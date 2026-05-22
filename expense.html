@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Remodel Expense Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F0E8;
+    --surface: #FDFAF4;
+    --card: #FFFFFF;
+    --accent: #C8522A;
+    --accent2: #2A6B4F;
+    --text: #1A1612;
+    --muted: #8A7F72;
+    --border: #DDD5C8;
+    --tag-bg: #EDE8DF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    background: var(--text); color: var(--bg);
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    gap: 10px;
+  }
+  .logo { display: flex; align-items: baseline; gap: 8px; flex-shrink: 0; }
+  .logo-title { font-family: 'Instrument Serif', serif; font-size: 20px; }
+  .logo-tag { font-family: 'DM Mono', monospace; font-size: 9px; background: var(--accent); color: white; padding: 2px 6px; border-radius: 3px; }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+  /* BUTTONS */
+  .btn {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-ghost { background: rgba(255,255,255,0.1); color: var(--bg); border: 1px solid rgba(255,255,255,0.2); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.2); }
+  .btn-accent { background: var(--accent); color: white; }
+  .btn-accent:hover { background: #b3471f; }
+  .btn-green { background: var(--accent2); color: white; }
+  .btn-green:hover { background: #1f5a40; }
+  .btn-sm { font-size: 12px; padding: 6px 12px; }
+  .btn-outline {
+    background: none; border: 1.5px solid var(--border); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 8px 14px; border-radius: 6px; cursor: pointer;
+  }
+  .btn-outline:hover { background: var(--bg); }
+
+  /* LAYOUT */
+  .layout { display: flex; height: calc(100vh - 49px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px; min-width: 200px;
+    background: var(--surface); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sidebar-header { padding: 16px 16px 10px; border-bottom: 1px solid var(--border); }
+  .sidebar-section-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .project-list { flex: 1; overflow-y: auto; padding: 8px; }
+  .project-item {
+    padding: 10px 12px; border-radius: 8px; cursor: pointer;
+    margin-bottom: 4px; transition: background 0.12s;
+    border: 1.5px solid transparent;
+  }
+  .project-item:hover { background: var(--tag-bg); }
+  .project-item.active {
+    background: var(--card); border-color: var(--border);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .project-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+  .project-meta { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; }
+  .project-amount { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); font-weight: 500; }
+
+  /* MAIN */
+  .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; min-width: 0; }
+  .main-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .main-header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .project-h1 { font-family: 'Instrument Serif', serif; font-size: 24px; font-weight: 400; line-height: 1.2; }
+  .project-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .stats-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .stat-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 100px;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin-bottom: 3px;
+  }
+  .stat-value { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; }
+  .stat-value.red  { color: var(--accent); }
+  .stat-value.green { color: var(--accent2); }
+
+  /* FILTER */
+  .filter-row {
+    display: flex; gap: 6px; padding: 10px 24px;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+    flex-wrap: wrap; align-items: center;
+  }
+  .filter-label { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; flex-shrink: 0; }
+  .filter-chip {
+    font-size: 11px; padding: 4px 10px; border-radius: 20px;
+    border: 1.5px solid var(--border); background: var(--card);
+    cursor: pointer; color: var(--text); transition: all 0.12s;
+    font-family: 'DM Mono', monospace; white-space: nowrap;
+  }
+  .filter-chip.active { border-color: var(--accent); background: #fef6f3; color: var(--accent); }
+
+  /* RECEIPTS AREA */
+  .receipts-area { padding: 20px 24px; flex: 1; }
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* RECEIPT CARD */
+  .receipt-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; margin-bottom: 12px; overflow: hidden;
+    transition: box-shadow 0.15s;
+  }
+  .receipt-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .receipt-card-header {
+    padding: 12px 16px; display: flex; align-items: center;
+    gap: 10px; cursor: pointer; user-select: none; flex-wrap: wrap;
+  }
+  .store-badge {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    padding: 3px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+  }
+  .badge-homedepot  { background: #FF6600; color: white; }
+  .badge-floordecor { background: #1B4D8E; color: white; }
+  .badge-lowes      { background: #004990; color: white; }
+  .badge-other      { background: var(--tag-bg); color: var(--muted); }
+  .receipt-info { flex: 1; min-width: 0; }
+  .receipt-date { font-size: 11px; color: var(--muted); }
+  .receipt-desc { font-size: 13px; font-weight: 500; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .receipt-total { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; color: var(--accent); flex-shrink: 0; }
+  .receipt-toggle { color: var(--muted); font-size: 16px; transition: transform 0.2s; flex-shrink: 0; }
+  .receipt-toggle.open { transform: rotate(180deg); }
+
+  .receipt-body { display: none; border-top: 1px solid var(--border); padding: 14px 16px; }
+  .receipt-body.open { display: block; }
+
+  /* ITEMS TABLE */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .items-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 380px; }
+  .items-table th {
+    text-align: left; font-family: 'DM Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+    padding: 0 6px 8px; border-bottom: 1px solid var(--border);
+  }
+  .items-table td { padding: 6px; vertical-align: middle; }
+  .items-table tr:not(:last-child) td { border-bottom: 1px solid #f0ebe3; }
+  .item-name-input, .item-price-input {
+    border: 1px solid transparent; background: transparent;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text);
+    padding: 4px 6px; border-radius: 4px; width: 100%;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .item-name-input:focus, .item-price-input:focus {
+    outline: none; border-color: var(--border); background: var(--bg);
+  }
+  .item-price-input { font-family: 'DM Mono', monospace; text-align: right; }
+  .item-used-check { accent-color: var(--accent2); width: 16px; height: 16px; cursor: pointer; }
+  .item-row.unused td { opacity: 0.38; }
+  .btn-del { background: none; border: none; color: #ccc; cursor: pointer; font-size: 15px; padding: 2px 4px; border-radius: 4px; }
+  .btn-del:hover { color: var(--accent); background: #fef0eb; }
+  .btn-add-item {
+    background: none; border: 1.5px dashed var(--border); color: var(--muted);
+    font-size: 12px; font-family: 'DM Sans', sans-serif;
+    padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.15s;
+  }
+  .btn-add-item:hover { border-color: var(--accent); color: var(--accent); }
+  .receipt-footer { margin-top: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .used-total { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent2); }
+
+  /* PHOTOS */
+  .receipt-imgs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .receipt-img-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 5px; border: 1px solid var(--border); cursor: pointer; }
+  .img-upload-btn {
+    width: 48px; height: 48px; border: 1.5px dashed var(--border);
+    border-radius: 5px; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 20px; cursor: pointer; transition: all 0.15s;
+  }
+  .img-upload-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* AI SCANNING */
+  .ai-scanning {
+    display: flex; align-items: center; gap: 8px; font-size: 12px;
+    color: var(--accent); padding: 8px 12px;
+    background: #fef6f3; border-radius: 6px;
+    border: 1px solid #f5ccc0; margin-bottom: 10px;
+  }
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid #f5ccc0; border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* MODALS */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,22,18,0.55); z-index: 200;
+    align-items: flex-end; justify-content: center; padding: 0;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card); border-radius: 18px 18px 0 0;
+    padding: 28px 24px 36px; width: 100%; max-width: 520px;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.18);
+    animation: slideUp 0.22s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+  .modal h2 { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: 400; margin-bottom: 18px; }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block; font-size: 11px; font-weight: 500; color: var(--muted);
+    margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.06em;
+    font-family: 'DM Mono', monospace;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 15px;
+    color: var(--text); background: var(--bg); transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--accent);
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+  /* EMPTY / NO PROJECT */
+  .empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
+  .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
+  .empty-state h3 { font-family: 'Instrument Serif', serif; font-size: 18px; color: var(--text); font-weight: 400; margin-bottom: 6px; }
+  .empty-state p { font-size: 13px; }
+  .no-project {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--muted); gap: 10px; padding: 40px 24px; text-align: center;
+  }
+  .no-project .icon { font-size: 44px; }
+  .no-project h2 { font-family: 'Instrument Serif', serif; font-size: 22px; color: var(--text); font-weight: 400; }
+  .no-project p { font-size: 13px; }
+
+  /* REPORT */
+  .report-preview { background: white; border-radius: 10px; padding: 24px; border: 1px solid var(--border); margin-top: 16px; font-size: 13px; }
+  .report-preview h3 { font-family: 'Instrument Serif', serif; font-size: 18px; font-weight: 400; margin-bottom: 6px; }
+  .report-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .report-table th { background: var(--bg); text-align: left; padding: 6px 8px; font-size: 10px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .report-table td { padding: 6px 8px; border-bottom: 1px solid #f0ebe3; font-size: 12px; }
+  .report-table tfoot td { font-weight: 600; border-top: 2px solid var(--border); font-family: 'DM Mono', monospace; }
+
+  /* LIGHTBOX */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 300; align-items: center; justify-content: center; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 95vw; max-height: 90vh; border-radius: 8px; }
+  .lightbox-close { position: absolute; top: 16px; right: 20px; color: white; font-size: 28px; cursor: pointer; }
+
+  /* MOBILE */
+  @media (max-width: 640px) {
+    .layout { flex-direction: column; height: auto; min-height: calc(100vh - 49px); }
+    .sidebar { width: 100%; min-width: unset; height: auto; border-right: none; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .project-list { max-height: 200px; }
+    .main { flex: 1; }
+    .main-header { padding: 16px; }
+    .filter-row { padding: 8px 16px; }
+    .receipts-area { padding: 14px 16px; }
+    .stats-row { gap: 8px; }
+    .stat-box { padding: 8px 12px; }
+    .stat-value { font-size: 16px; }
+    header { padding: 12px 16px; }
+    .logo-title { font-size: 17px; }
+    .btn { font-size: 12px; padding: 7px 11px; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* PRINT */
+  @media print {
+    .no-print { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-title">Remodel Tracker</span>
+    <span class="logo-tag">EXPENSE</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost btn-sm" onclick="openNewProject()">+ Project</button>
+    <button class="btn btn-green btn-sm" onclick="openReport()" id="reportBtn" style="display:none">📄 Report</button>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-section-label">Projects / Clients</div>
+      <button class="btn btn-accent btn-sm" style="width:100%" onclick="openNewProject()">+ New Project</button>
+    </div>
+    <div class="project-list" id="projectList"></div>
+  </div>
+  <div class="main" id="mainArea">
+    <div class="no-project">
+      <div class="icon">🏗️</div>
+      <h2>Select or create a project</h2>
+      <p>Track material expenses per client job</p>
+      <button class="btn btn-accent" style="margin-top:10px" onclick="openNewProject()">+ New Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW PROJECT MODAL -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>New Project</h2>
+    <div class="field"><label>Client Name *</label><input id="clientName" placeholder="e.g. Johnson Family" /></div>
+    <div class="field"><label>Job Address</label><input id="jobAddress" placeholder="e.g. 123 Oak St, Austin TX" /></div>
+    <div class="field"><label>Job Type</label><input id="jobType" placeholder="e.g. Kitchen Remodel, Flooring" /></div>
+    <div class="field"><label>Start Date</label><input id="jobStart" type="date" /></div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('projectModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="saveProject()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD RECEIPT MODAL -->
+<div class="modal-overlay" id="receiptModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Add Receipt</h2>
+    <div class="field">
+      <label>Store</label>
+      <select id="receiptStore">
+        <option value="homedepot">Home Depot</option>
+        <option value="floordecor">Floor &amp; Decor</option>
+        <option value="lowes">Lowe's</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="field" id="otherStoreField" style="display:none">
+      <label>Store Name</label>
+      <input id="otherStoreName" placeholder="Store name" />
+    </div>
+    <div class="field"><label>Date of Purchase</label><input id="receiptDate" type="date" /></div>
+    <div class="field"><label>Notes (optional)</label><input id="receiptNotes" placeholder="e.g. Bathroom tile, kitchen cabinets..." /></div>
+    <div class="field">
+      <label>Upload Receipt Photo — AI will scan items automatically</label>
+      <button class="btn btn-accent" style="width:100%;padding:14px;margin-top:4px;font-size:14px" onclick="document.getElementById('receiptImgInput').click()">
+        📷 Take / Choose Photo
+      </button>
+      <input type="file" id="receiptImgInput" accept="image/*" style="display:none" onchange="handleReceiptImg(event)" multiple />
+      <div id="uploadedImgPreview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('receiptModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="saveReceipt()">Add Receipt</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="modal-overlay" id="reportModal">
+  <div class="modal" style="max-height:92vh">
+    <div class="modal-handle"></div>
+    <h2>📄 Reimbursement Report</h2>
+    <div id="reportContent"></div>
+    <div class="modal-actions" style="flex-wrap:wrap">
+      <button class="btn-outline" onclick="closeModal('reportModal')">Close</button>
+      <button class="btn btn-green" onclick="copyReportText()">📋 Copy Text</button>
+      <button class="btn btn-accent" onclick="printReport()">🖨️ Print PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">✕</span>
+  <img id="lightboxImg" src="" />
+</div>
+
+<script>
+// ===== STATE =====
+let state = { projects: [], currentProjectId: null };
+function loadState() {
+  try { const s = localStorage.getItem('remodelTracker'); if (s) state = JSON.parse(s); } catch(e) {}
+}
+function saveState() {
+  try { localStorage.setItem('remodelTracker', JSON.stringify(state)); } catch(e) {}
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+// ===== PROJECT =====
+function openNewProject() {
+  document.getElementById('clientName').value = '';
+  document.getElementById('jobAddress').value = '';
+  document.getElementById('jobType').value = '';
+  document.getElementById('jobStart').value = new Date().toISOString().split('T')[0];
+  document.getElementById('projectModal').classList.add('open');
+}
+function saveProject() {
+  const name = document.getElementById('clientName').value.trim();
+  if (!name) { alert('Please enter client name'); return; }
+  const p = {
+    id: uid(), name,
+    address: document.getElementById('jobAddress').value.trim(),
+    type: document.getElementById('jobType').value.trim(),
+    start: document.getElementById('jobStart').value,
+    receipts: []
+  };
+  state.projects.push(p);
+  saveState(); closeModal('projectModal'); renderSidebar(); selectProject(p.id);
+}
+function selectProject(id) { state.currentProjectId = id; renderSidebar(); renderMain(); }
+function getProject(id) { return state.projects.find(p => p.id === id); }
+function getCurrentProject() { return getProject(state.currentProjectId); }
+function deleteProject(id) {
+  if (!confirm('Delete this project and all its receipts?')) return;
+  state.projects = state.projects.filter(p => p.id !== id);
+  if (state.currentProjectId === id) state.currentProjectId = null;
+  saveState(); renderSidebar(); renderMain();
+}
+
+// ===== RECEIPT =====
+let pendingImages = [];
+function openAddReceipt() {
+  pendingImages = [];
+  document.getElementById('receiptStore').value = 'homedepot';
+  document.getElementById('receiptDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('receiptNotes').value = '';
+  document.getElementById('uploadedImgPreview').innerHTML = '';
+  document.getElementById('otherStoreField').style.display = 'none';
+  document.getElementById('receiptImgInput').value = '';
+  document.getElementById('receiptModal').classList.add('open');
+}
+document.getElementById('receiptStore').addEventListener('change', function() {
+  document.getElementById('otherStoreField').style.display = this.value === 'other' ? 'block' : 'none';
+});
+function handleReceiptImg(e) {
+  Array.from(e.target.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      // Resize before storing
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX = 1400;
+        let [w, h] = [img.width, img.height];
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else { w = Math.round(w * MAX / h); h = MAX; }
+        }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+        pendingImages.push({ dataUrl, name: file.name });
+        renderImgPreview();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function renderImgPreview() {
+  document.getElementById('uploadedImgPreview').innerHTML = pendingImages.map(img =>
+    `<img src="${img.dataUrl}" style="width:56px;height:56px;object-fit:cover;border-radius:5px;border:1px solid var(--border)" />`
+  ).join('');
+}
+function saveReceipt() {
+  const proj = getCurrentProject(); if (!proj) return;
+  const store = document.getElementById('receiptStore').value;
+  const r = {
+    id: uid(), store,
+    storeName: store === 'other' ? (document.getElementById('otherStoreName').value.trim() || 'Other') : null,
+    date: document.getElementById('receiptDate').value,
+    notes: document.getElementById('receiptNotes').value.trim(),
+    images: pendingImages.map(i => i.dataUrl),
+    items: [], expanded: true,
+    scanning: pendingImages.length > 0
+  };
+  proj.receipts.push(r); saveState(); closeModal('receiptModal'); renderMain();
+  if (pendingImages.length > 0) {
+    const imgs = [...pendingImages];
+    setTimeout(() => scanReceiptWithAI(proj.id, r.id, imgs[0].dataUrl), 400);
+  }
+}
+
+// ===== AI SCAN =====
+async function scanReceiptWithAI(projId, receiptId, imageDataUrl) {
+  const proj = getProject(projId);
+  const r = proj?.receipts.find(x => x.id === receiptId);
+  if (!r) return;
+  r.scanning = true; r.scanError = false; r.scanErrorMsg = '';
+  renderMain();
+
+  try {
+    const base64Data = imageDataUrl.split(',')[1];
+    const mediaType = imageDataUrl.split(';')[0].split(':')[1] || 'image/jpeg';
+
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1500,
+        messages: [{
+          role: "user",
+          content: [
+            { type: "image", source: { type: "base64", media_type: mediaType, data: base64Data } },
+            { type: "text", text: "This is a store receipt. Extract every purchased line item.\nReturn ONLY a JSON array, nothing else — no markdown, no explanation.\nFormat: [{\"name\":\"item description\",\"price\":9.99,\"qty\":1}]\nRules: price = unit price as number. qty = quantity as number (default 1). Include tax as its own line if shown. If unreadable return: []" }
+          ]
+        }]
+      })
+    });
+
+    const rawText = await response.text();
+    console.log('[Scan] HTTP', response.status, '| Raw:', rawText.slice(0, 200));
+
+    let data;
+    try { data = JSON.parse(rawText); }
+    catch(e) { throw new Error('Non-JSON response: ' + rawText.slice(0, 100)); }
+
+    if (!response.ok || data.type === 'error') {
+      throw new Error(data?.error?.message || 'API error ' + response.status);
+    }
+
+    const text = (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('');
+    console.log('[Scan] AI text:', text.slice(0, 300));
+
+    let items = [];
+    try {
+      const clean = text.replace(/```json|```/gi, '').trim();
+      const match = clean.match(/\[[\s\S]*?\]/);
+      if (match) items = JSON.parse(match[0]);
+    } catch(e) { console.warn('[Scan] JSON parse failed:', e); }
+
+    const fp = getProject(projId);
+    const fr = fp?.receipts.find(x => x.id === receiptId);
+    if (fr) {
+      fr.scanning = false; fr.scanError = false;
+      fr.items = items.length > 0
+        ? items.map(item => ({ id: uid(), name: String(item.name || 'Item').slice(0, 80), price: parseFloat(item.price) || 0, qty: parseInt(item.qty) || 1, used: true }))
+        : [{ id: uid(), name: 'Item 1', price: 0, qty: 1, used: true }];
+      saveState(); renderMain();
+    }
+  } catch(err) {
+    console.error('[Scan] Error:', err.message);
+    const fp = getProject(projId);
+    const fr = fp?.receipts.find(x => x.id === receiptId);
+    if (fr) {
+      fr.scanning = false; fr.scanError = true;
+      fr.scanErrorMsg = err.message || 'Unknown error';
+      if (!fr.items.length) fr.items = [{ id: uid(), name: 'Item 1', price: 0, qty: 1, used: true }];
+      saveState(); renderMain();
+    }
+  }
+}
+
+// ===== RENDER =====
+function getProjectTotal(p)     { return p.receipts.reduce((s,r) => s + r.items.reduce((ss,i) => ss + i.price*(i.qty||1), 0), 0); }
+function getProjectUsedTotal(p) { return p.receipts.reduce((s,r) => s + r.items.filter(i=>i.used).reduce((ss,i) => ss + i.price*(i.qty||1), 0), 0); }
+
+function renderSidebar() {
+  const list = document.getElementById('projectList');
+  if (!state.projects.length) {
+    list.innerHTML = `<div style="text-align:center;padding:20px 12px;color:var(--muted);font-size:12px">No projects yet</div>`;
+    return;
+  }
+  list.innerHTML = state.projects.map(p => `
+    <div class="project-item ${p.id===state.currentProjectId?'active':''}" onclick="selectProject('${p.id}')">
+      <div class="project-name">${escHtml(p.name)}</div>
+      <div class="project-meta">
+        <span>${escHtml(p.type||'Remodel')}</span>
+        <span class="project-amount">$${getProjectUsedTotal(p).toFixed(2)}</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${p.receipts.length} receipt${p.receipts.length!==1?'s':''}</div>
+    </div>`).join('');
+}
+
+let filterStore = 'all';
+function setFilter(s) { filterStore = s; renderMain(); }
+
+function renderMain() {
+  const proj = getCurrentProject();
+  const mainArea = document.getElementById('mainArea');
+  const reportBtn = document.getElementById('reportBtn');
+  if (!proj) {
+    reportBtn.style.display = 'none';
+    mainArea.innerHTML = `<div class="no-project"><div class="icon">🏗️</div><h2>Select or create a project</h2><p>Track material expenses per client job</p><button class="btn btn-accent" style="margin-top:10px" onclick="openNewProject()">+ New Project</button></div>`;
+    return;
+  }
+  reportBtn.style.display = 'inline-flex';
+  const total = getProjectTotal(proj), usedTotal = getProjectUsedTotal(proj);
+  const visible = filterStore === 'all' ? proj.receipts : proj.receipts.filter(r => r.store === filterStore);
+  mainArea.innerHTML = `
+    <div class="main-header">
+      <div class="main-header-top">
+        <div>
+          <div class="project-h1">${escHtml(proj.name)}</div>
+          <div class="project-sub">${proj.address ? escHtml(proj.address)+' · ' : ''}${escHtml(proj.type||'Remodel')}</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">
+          <button class="btn btn-accent btn-sm" onclick="openAddReceipt()">+ Add Receipt</button>
+          <button class="btn btn-sm" onclick="deleteProject('${proj.id}')" style="background:none;border:1.5px solid var(--border);color:var(--muted);font-size:12px;padding:6px 10px;border-radius:6px;cursor:pointer" title="Delete project">🗑</button>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-label">Receipts</div><div class="stat-value">${proj.receipts.length}</div></div>
+        <div class="stat-box"><div class="stat-label">Total Spent</div><div class="stat-value red">$${total.toFixed(2)}</div></div>
+        <div class="stat-box"><div class="stat-label">To Reimburse</div><div class="stat-value green">$${usedTotal.toFixed(2)}</div></div>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Filter:</span>
+      ${['all','homedepot','floordecor','lowes','other'].map(s =>
+        `<span class="filter-chip ${filterStore===s?'active':''}" onclick="setFilter('${s}')">${{all:'All',homedepot:'Home Depot',floordecor:'Floor & Decor',lowes:"Lowe's",other:'Other'}[s]}</span>`
+      ).join('')}
+    </div>
+    <div class="receipts-area">
+      <div class="section-label">Receipts (${visible.length})</div>
+      ${visible.length === 0
+        ? `<div class="empty-state"><div class="icon">🧾</div><h3>No receipts yet</h3><p>Add your first receipt to start tracking</p><button class="btn btn-accent" style="margin-top:14px" onclick="openAddReceipt()">+ Add Receipt</button></div>`
+        : visible.map(r => renderReceiptCard(proj.id, r)).join('')
+      }
+    </div>`;
+}
+
+function storeName(r) {
+  return { homedepot:'Home Depot', floordecor:'Floor & Decor', lowes:"Lowe's", other: r.storeName||'Other' }[r.store];
+}
+function storeBadgeHtml(r) {
+  return `<span class="store-badge badge-${r.store}">${storeName(r)}</span>`;
+}
+
+function renderReceiptCard(projId, r) {
+  const total     = r.items.reduce((s,i) => s + i.price*(i.qty||1), 0);
+  const usedTotal = r.items.filter(i=>i.used).reduce((s,i) => s + i.price*(i.qty||1), 0);
+  const open = r.expanded ? 'open' : '';
+
+  const scanMsg = r.scanning
+    ? `<div class="ai-scanning"><div class="spinner"></div>AI is scanning your receipt and extracting line items…</div>`
+    : r.scanError
+      ? `<div class="ai-scanning" style="color:#7a3a1e;border-color:#f5ccc0;background:#fff5f2;flex-wrap:wrap;gap:6px">
+          <span>⚠️ Scan failed${r.scanErrorMsg ? ': ' + escHtml(r.scanErrorMsg.slice(0,80)) : ''}. Add items manually or</span>
+          <button onclick="retryImageScan('${projId}','${r.id}')" style="background:var(--accent);color:white;border:none;border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">↺ Retry Scan</button>
+        </div>`
+      : '';
+
+  const imgsHtml = r.images.length
+    ? `<div class="receipt-imgs">${r.images.map(img =>
+        `<img class="receipt-img-thumb" src="${img}" onclick="openLightbox(this.src)"/>`
+      ).join('')}<div class="img-upload-btn" onclick="addMoreImages('${projId}','${r.id}')" title="Add photo">+</div></div>`
+    : '';
+
+  const rows = r.items.map(item => `
+    <tr class="item-row ${item.used ? '' : 'unused'}">
+      <td style="width:28px;text-align:center"><input type="checkbox" class="item-used-check" ${item.used?'checked':''} onchange="toggleItem('${projId}','${r.id}','${item.id}',this.checked)"/></td>
+      <td><input class="item-name-input" value="${escHtml(item.name)}" onchange="updateItem('${projId}','${r.id}','${item.id}','name',this.value)" placeholder="Item description"/></td>
+      <td style="width:48px"><input class="item-name-input" style="text-align:center;font-size:12px" type="number" min="1" value="${item.qty||1}" onchange="updateItem('${projId}','${r.id}','${item.id}','qty',this.value)"/></td>
+      <td style="width:100px"><input class="item-price-input" type="number" step="0.01" value="${item.price.toFixed(2)}" onchange="updateItem('${projId}','${r.id}','${item.id}','price',this.value)"/></td>
+      <td style="width:28px"><button class="btn-del" onclick="deleteItem('${projId}','${r.id}','${item.id}')">✕</button></td>
+    </tr>`).join('');
+
+  return `
+    <div class="receipt-card">
+      <div class="receipt-card-header" onclick="toggleReceipt('${projId}','${r.id}')">
+        ${storeBadgeHtml(r)}
+        <div class="receipt-info">
+          <div class="receipt-date">${formatDate(r.date)}</div>
+          <div class="receipt-desc">${r.notes || '—'}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div class="receipt-total">$${total.toFixed(2)}</div>
+          ${usedTotal < total ? `<div style="font-size:10px;color:var(--accent2);font-family:'DM Mono',monospace">✓ $${usedTotal.toFixed(2)}</div>` : ''}
+        </div>
+        <div class="receipt-toggle ${open}">▾</div>
+        <button onclick="event.stopPropagation();deleteReceipt('${projId}','${r.id}')"
+          style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:4px" title="Delete">🗑</button>
+      </div>
+      <div class="receipt-body ${open}">
+        ${scanMsg}${imgsHtml}
+        <div class="table-wrap">
+          <table class="items-table">
+            <thead><tr><th>✓</th><th>Item</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th></th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div style="margin-top:8px"><button class="btn-add-item" onclick="addItem('${projId}','${r.id}')">+ Add Item</button></div>
+        <div class="receipt-footer">
+          <span class="used-total">Reimbursable: $${usedTotal.toFixed(2)} / $${total.toFixed(2)}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const [y,m,day] = d.split('-');
+  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1] + ' ' + parseInt(day) + ', ' + y;
+}
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== ACTIONS =====
+function toggleReceipt(pId, rId) {
+  const r = getProject(pId).receipts.find(x => x.id === rId);
+  r.expanded = !r.expanded; saveState(); renderMain();
+}
+function toggleItem(pId, rId, iId, v) {
+  const r = getProject(pId).receipts.find(x => x.id === rId);
+  r.items.find(i => i.id === iId).used = v; saveState(); renderMain();
+}
+function updateItem(pId, rId, iId, field, val) {
+  const item = getProject(pId).receipts.find(x => x.id === rId).items.find(i => i.id === iId);
+  if (field === 'price') item.price = parseFloat(val) || 0;
+  else if (field === 'qty') item.qty = parseInt(val) || 1;
+  else item[field] = val;
+  saveState(); renderMain();
+}
+function deleteItem(pId, rId, iId) {
+  const r = getProject(pId).receipts.find(x => x.id === rId);
+  r.items = r.items.filter(i => i.id !== iId); saveState(); renderMain();
+}
+function addItem(pId, rId) {
+  const r = getProject(pId).receipts.find(x => x.id === rId);
+  r.items.push({ id: uid(), name: '', price: 0, qty: 1, used: true });
+  saveState(); renderMain();
+  setTimeout(() => { const ins = document.querySelectorAll('.item-name-input'); if (ins.length) ins[ins.length-1].focus(); }, 50);
+}
+function deleteReceipt(pId, rId) {
+  if (!confirm('Delete this receipt?')) return;
+  const p = getProject(pId); p.receipts = p.receipts.filter(r => r.id !== rId);
+  saveState(); renderMain();
+}
+function retryImageScan(pId, rId) {
+  const r = getProject(pId)?.receipts.find(x => x.id === rId);
+  if (!r || !r.images.length) return;
+  r.scanError = false; r.scanErrorMsg = ''; r.items = [];
+  saveState(); renderMain();
+  setTimeout(() => scanReceiptWithAI(pId, rId, r.images[0]), 300);
+}
+function addMoreImages(pId, rId) {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*'; inp.multiple = true;
+  inp.onchange = e => Array.from(e.target.files).forEach(f => {
+    const rd = new FileReader();
+    rd.onload = ev => {
+      const p = getProject(pId); const r = p?.receipts.find(x => x.id === rId);
+      if (r) { r.images.push(ev.target.result); saveState(); renderMain(); }
+    };
+    rd.readAsDataURL(f);
+  });
+  inp.click();
+}
+
+// ===== REPORT =====
+function openReport() {
+  const proj = getCurrentProject(); if (!proj) return;
+  let totalReimburse = 0; const storeGroups = {};
+  proj.receipts.forEach(r => {
+    const used = r.items.filter(i => i.used); if (!used.length) return;
+    const key = storeName(r);
+    if (!storeGroups[key]) storeGroups[key] = [];
+    used.forEach(i => {
+      const t = i.price * (i.qty||1); totalReimburse += t;
+      storeGroups[key].push({ date: r.date, name: i.name, qty: i.qty||1, price: i.price, total: t });
+    });
+  });
+  const today = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  let html = `<div class="report-preview">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <div>
+        <h3>Material Reimbursement</h3>
+        <div style="color:var(--muted);font-size:11px">${today}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">CLIENT</div>
+        <div style="font-weight:600">${escHtml(proj.name)}</div>
+        ${proj.address ? `<div style="font-size:11px;color:var(--muted)">${escHtml(proj.address)}</div>` : ''}
+      </div>
+    </div>`;
+  Object.entries(storeGroups).forEach(([store, items]) => {
+    const st = items.reduce((s,i) => s + i.total, 0);
+    html += `<div style="margin-bottom:16px">
+      <div style="font-weight:600;font-size:12px;margin-bottom:6px">${escHtml(store)} — $${st.toFixed(2)}</div>
+      <table class="report-table">
+        <thead><tr><th>Date</th><th>Item</th><th>Qty</th><th style="text-align:right">Unit</th><th style="text-align:right">Total</th></tr></thead>
+        <tbody>${items.map(i => `
+          <tr>
+            <td style="color:var(--muted);white-space:nowrap">${formatDate(i.date)}</td>
+            <td>${escHtml(i.name)}</td>
+            <td>${i.qty}</td>
+            <td style="text-align:right;font-family:'DM Mono',monospace">$${i.price.toFixed(2)}</td>
+            <td style="text-align:right;font-family:'DM Mono',monospace">$${i.total.toFixed(2)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  });
+  html += `<table class="report-table" style="margin-top:12px">
+    <tfoot><tr>
+      <td colspan="4" style="text-align:right;padding-right:12px;font-family:'DM Mono',monospace">TOTAL</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--accent);font-size:15px">$${totalReimburse.toFixed(2)}</td>
+    </tr></tfoot>
+  </table>
+  <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)">
+    All materials purchased for ${escHtml(proj.name)}${proj.address ? ' at ' + escHtml(proj.address) : ''}. Receipts available upon request.
+  </div></div>`;
+  document.getElementById('reportContent').innerHTML = html;
+  document.getElementById('reportModal').classList.add('open');
+}
+
+function printReport() {
+  const c = document.getElementById('reportContent').innerHTML;
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><title>Reimbursement</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      body { font-family:'DM Sans',sans-serif; padding:32px; color:#1A1612; }
+      table { width:100%; border-collapse:collapse; }
+      th { text-align:left; padding:5px 8px; font-size:10px; font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:.06em; color:#8A7F72; background:#F5F0E8; }
+      td { padding:6px 8px; border-bottom:1px solid #f0ebe3; font-size:12px; }
+      tfoot td { font-weight:600; border-top:2px solid #DDD5C8; font-family:'DM Mono',monospace; }
+      h3 { font-family:'Instrument Serif',serif; font-size:18px; margin-bottom:4px; font-weight:400; }
+      @media print { body { padding:16px; } }
+    </style></head><body>${c}</body></html>`);
+  w.document.close(); w.print();
+}
+
+function copyReportText() {
+  const proj = getCurrentProject(); if (!proj) return;
+  let txt = `MATERIAL REIMBURSEMENT REQUEST\nClient: ${proj.name}\n${proj.address ? 'Address: ' + proj.address + '\n' : ''}Date: ${new Date().toLocaleDateString()}\n\n`;
+  let total = 0;
+  proj.receipts.forEach(r => {
+    const used = r.items.filter(i => i.used); if (!used.length) return;
+    txt += `--- ${storeName(r)} (${formatDate(r.date)}) ---\n`;
+    used.forEach(i => { const t = i.price*(i.qty||1); total += t; txt += `  ${i.name}  x${i.qty||1}  $${t.toFixed(2)}\n`; });
+    txt += '\n';
+  });
+  txt += `TOTAL REIMBURSEMENT: $${total.toFixed(2)}\n`;
+  navigator.clipboard.writeText(txt).then(() => alert('Copied to clipboard!'));
+}
+
+// ===== MODAL / LIGHTBOX =====
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('open'); }
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+// ===== INIT =====
+loadState(); renderSidebar(); renderMain();
+</script>
+</body>
+</html>
