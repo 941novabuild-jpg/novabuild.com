@@ -307,10 +307,15 @@ header {
       <span class="logo-tag green">ADMIN</span>
     </div>
     <div class="header-actions">
-      <button class="btn btn-ghost btn-sm" onclick="exportHTML()" title="Download updated HTML to re-upload">⬇ Export HTML</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportHTML()" title="Download updated HTML to re-upload" id="export-btn">⬇ Export HTML <span id="export-dot" style="display:none;width:7px;height:7px;background:#f87171;border-radius:50%;flex-shrink:0"></span></button>
       <button class="btn btn-ghost btn-sm" onclick="doLogout()">Log Out</button>
     </div>
   </header>
+  <div id="pending-export-banner" style="display:none;background:#fef3c7;border-bottom:1px solid #fde68a;padding:9px 20px;font-size:12px;color:#92400e;align-items:center;gap:8px;">
+    <span>⚠️</span>
+    <span>你有未导出的更改 — 在手机或其他设备上登录前，请点击右上角 <strong>Export HTML</strong> 并重新上传文件。</span>
+    <button onclick="exportHTML()" style="margin-left:auto;background:#f59e0b;color:white;border:none;border-radius:5px;padding:4px 12px;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;font-weight:500">⬇ 立即导出</button>
+  </div>
   <div class="layout">
     <!-- SIDEBAR -->
     <div class="sidebar">
@@ -517,7 +522,14 @@ function loadState() {
   try {
     const raw = localStorage.getItem('remodelPortal_v2');
     const stored = raw ? JSON.parse(raw) : null;
-    if (!stored || stored.version < EMBEDDED_DATA.version) {
+    // Use EMBEDDED_DATA when:
+    //   1. No local data exists, OR
+    //   2. Local data is an older schema version, OR
+    //   3. The HTML was exported AFTER local data was last saved
+    //      (means admin exported & re-uploaded → embedded data is authoritative)
+    const embeddedIsNewer = EMBEDDED_DATA.exportedAt &&
+      (!stored || !stored.savedAt || EMBEDDED_DATA.exportedAt > stored.savedAt);
+    if (!stored || stored.version < EMBEDDED_DATA.version || embeddedIsNewer) {
       S = deepCopy(EMBEDDED_DATA);
     } else {
       S = stored;
@@ -526,7 +538,31 @@ function loadState() {
 }
 
 function saveState() {
-  try { localStorage.setItem('remodelPortal_v2', JSON.stringify(S)); } catch(e) {}
+  try {
+    const toSave = deepCopy(S);
+    toSave.savedAt = Date.now();          // track when local changes were last made
+    localStorage.setItem('remodelPortal_v2', JSON.stringify(toSave));
+  } catch(e) {}
+  updatePendingBanner();
+}
+
+// Returns true when localStorage has changes newer than the last export
+function hasPendingExport() {
+  try {
+    const raw = localStorage.getItem('remodelPortal_v2');
+    const stored = raw ? JSON.parse(raw) : null;
+    if (!stored || !stored.savedAt) return false;
+    if (!EMBEDDED_DATA.exportedAt) return true;  // never exported
+    return stored.savedAt > EMBEDDED_DATA.exportedAt;
+  } catch(e) { return false; }
+}
+
+function updatePendingBanner() {
+  const pending = hasPendingExport();
+  const banner = document.getElementById('pending-export-banner');
+  const dot = document.getElementById('export-dot');
+  if (banner) banner.style.display = pending ? 'flex' : 'none';
+  if (dot)    dot.style.display    = pending ? 'inline-block' : 'none';
 }
 
 function deepCopy(obj) { return JSON.parse(JSON.stringify(obj)); }
@@ -1383,6 +1419,8 @@ function exportHTML() {
   S.version = (S.version || 1) + 1;
   saveState();
   const exportData = deepCopy(S);
+  exportData.exportedAt = Date.now();   // timestamp so any device loading this file knows it's fresh
+  delete exportData.savedAt;            // savedAt belongs to localStorage, not embedded data
   const newDataStr = `// DATA_START\nconst EMBEDDED_DATA = ${JSON.stringify(exportData, null, 2)};\n// DATA_END`;
   let html = document.documentElement.outerHTML;
   html = html.replace(/\/\/ DATA_START[\s\S]*?\/\/ DATA_END/, newDataStr);
@@ -1392,6 +1430,14 @@ function exportHTML() {
   a.download = 'remodel-invoice-portal.html';
   a.click();
   URL.revokeObjectURL(a.href);
+  // After export the downloaded file is the source of truth — clear pending indicator
+  const btn = document.getElementById('export-btn');
+  if (btn) {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ 已导出 — 请重新上传文件';
+    btn.style.background = 'rgba(42,107,79,0.35)';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; updatePendingBanner(); }, 4000);
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1399,6 +1445,7 @@ function exportHTML() {
 // ═══════════════════════════════════════════════════════
 loadState();
 showView('login');
+updatePendingBanner();
 </script>
 </body>
 </html>
