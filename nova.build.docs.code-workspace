@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../Documents/Codex/2026-09-06/hello-gpt-nova-build-google-seo/outputs/nova-build-netlify/dist"
+		},
+		{
+			"path": "../../Documents/Codex/2026-09-06/hello-gpt-nova-build-google-seo/outputs/nova-build-netlify/scripts"
+		},
+		{
+			"path": "../../Documents/Codex/2026-09-06/hello-gpt-nova-build-google-seo/outputs/nova-build-netlify/site"
+		}
+	],
+	"settings": {}
+}
