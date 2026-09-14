@@ -4,5 +4,3 @@
 
 [build.environment]
   NODE_VERSION = "22"
-
-# Real HTML pages are provided for every route. No SPA catch-all is needed.

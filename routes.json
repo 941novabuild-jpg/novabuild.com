@@ -1,9 +1,12 @@
 [
   "/",
-  "/services/kitchen-remodeling/",
-  "/services/bathroom-remodeling/",
-  "/services/tile-installation/",
-  "/services/home-renovation/",
-  "/service-areas/",
-  "/privacy/"
+  "/services/kitchen-remodeling",
+  "/services/bathroom-remodeling",
+  "/services/finish-carpentry",
+  "/services/home-renovation",
+  "/services/tile-installation",
+  "/service-areas",
+  "/privacy",
+  "/projects/kitchen-study",
+  "/projects/bathroom-study"
 ]

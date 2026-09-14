@@ -1,0 +1,91 @@
+{
+  "../../nova-build/node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js": {
+    "file": "_next/static/chunks/app-route-prefetch-policy-C7w88hyy.js",
+    "name": "app-route-prefetch-policy",
+    "src": "../../nova-build/node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "virtual:vinext-app-browser-entry"
+    ]
+  },
+  "../../nova-build/node_modules/vinext/dist/shims/layout-segment-context.js": {
+    "file": "_next/static/chunks/layout-segment-context-CbkfhQF0.js",
+    "name": "layout-segment-context",
+    "src": "../../nova-build/node_modules/vinext/dist/shims/layout-segment-context.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-C60lm6uB.js",
+      "virtual:vinext-app-browser-entry",
+      "_framework-D_rUT4EX.js"
+    ]
+  },
+  "../../nova-build/node_modules/vinext/dist/shims/streamed-icons.js": {
+    "file": "_next/static/chunks/streamed-icons-DNogeH_Z.js",
+    "name": "streamed-icons",
+    "src": "../../nova-build/node_modules/vinext/dist/shims/streamed-icons.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-C60lm6uB.js",
+      "_framework-D_rUT4EX.js"
+    ]
+  },
+  "_framework-D_rUT4EX.js": {
+    "file": "_next/static/chunks/framework-D_rUT4EX.js",
+    "name": "framework",
+    "imports": [
+      "_rolldown-runtime-C60lm6uB.js"
+    ]
+  },
+  "_rolldown-runtime-C60lm6uB.js": {
+    "file": "_next/static/chunks/rolldown-runtime-C60lm6uB.js",
+    "name": "rolldown-runtime"
+  },
+  "_slider-zqGvk9MQ.js": {
+    "file": "_next/static/chunks/slider-zqGvk9MQ.js",
+    "name": "slider",
+    "imports": [
+      "_rolldown-runtime-C60lm6uB.js",
+      "_framework-D_rUT4EX.js"
+    ]
+  },
+  "components/service-album.tsx": {
+    "file": "_next/static/chunks/service-album-zl8Mbd13.js",
+    "name": "service-album",
+    "src": "components/service-album.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-C60lm6uB.js",
+      "_slider-zqGvk9MQ.js",
+      "_framework-D_rUT4EX.js"
+    ]
+  },
+  "components/study-gallery.tsx": {
+    "file": "_next/static/chunks/study-gallery-Dcz8sr4g.js",
+    "name": "study-gallery",
+    "src": "components/study-gallery.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-C60lm6uB.js",
+      "_slider-zqGvk9MQ.js",
+      "_framework-D_rUT4EX.js"
+    ]
+  },
+  "virtual:vinext-app-browser-entry": {
+    "file": "_next/static/chunks/index-D0MFHMqx.js",
+    "name": "index",
+    "src": "virtual:vinext-app-browser-entry",
+    "isEntry": true,
+    "imports": [
+      "_rolldown-runtime-C60lm6uB.js",
+      "_framework-D_rUT4EX.js"
+    ],
+    "dynamicImports": [
+      "../../nova-build/node_modules/vinext/dist/shims/internal/app-route-prefetch-policy.js",
+      "components/study-gallery.tsx",
+      "../../nova-build/node_modules/vinext/dist/shims/layout-segment-context.js",
+      "virtual:vinext-app-browser-entry",
+      "components/service-album.tsx",
+      "../../nova-build/node_modules/vinext/dist/shims/streamed-icons.js"
+    ]
+  }
+}

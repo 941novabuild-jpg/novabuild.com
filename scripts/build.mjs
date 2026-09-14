@@ -1,23 +1,13 @@
-import { cp, mkdir, readFile, writeFile, readdir, rm } from 'node:fs/promises';
+import {cp,rm,readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
-const root = path.resolve(import.meta.dirname, '..');
-const output = path.join(root, 'dist');
-const origin = 'https://nova941.com';
-const preview = Boolean(process.env.CONTEXT && process.env.CONTEXT !== 'production');
-await rm(output, { recursive: true, force: true });
-await mkdir(output, { recursive: true });
-await cp(path.join(root, 'site'), output, { recursive: true });
-const routes = JSON.parse(await readFile(path.join(root, 'routes.json'), 'utf8'));
-if (preview) {
-  for (const route of routes) {
-    const file = path.join(output, route, 'index.html');
-    const html = await readFile(file, 'utf8');
-    await writeFile(file, html.replace('content="index, follow"', 'content="noindex, nofollow"'));
-  }
-}
-await writeFile(path.join(output, 'robots.txt'), preview
-  ? 'User-agent: *\nDisallow: /\n'
-  : `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`);
-await writeFile(path.join(output, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map(route => `  <url><loc>${origin}${route}</loc></url>`).join('\n')}\n</urlset>\n`);
-await writeFile(path.join(output, '_headers'), '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n'+(preview?'  X-Robots-Tag: noindex, nofollow\n':''));
-console.log(`Built ${routes.length} pages for ${preview ? 'non-indexable preview' : 'production'} → dist`);
+const root=path.resolve(import.meta.dirname,'..');
+const dist=path.join(root,'dist');
+await rm(dist,{recursive:true,force:true});
+await cp(path.join(root,'site'),dist,{recursive:true});
+const routes=JSON.parse(await readFile(path.join(root,'routes.json'),'utf8'));
+const preview=!!process.env.CONTEXT&&process.env.CONTEXT!=='production';
+if(preview){for(const route of routes){const f=path.join(dist,route==='/'?'index.html':route.slice(1)+'.html');const html=await readFile(f,'utf8');await writeFile(f,html.replace(/<meta name="robots"[^>]*>/g,'<meta name="robots" content="noindex, nofollow"/>'));}await writeFile(path.join(dist,'_headers'),(await readFile(path.join(dist,'_headers'),'utf8'))+'\n/*\n  X-Robots-Tag: noindex, nofollow\n');}
+await writeFile(path.join(dist,'robots.txt'),preview?'User-agent: *\nDisallow: /\n':'User-agent: *\nAllow: /\nSitemap: https://nova941.com/sitemap.xml\n');
+const indexable=routes.filter(r=>!r.startsWith('/projects/'));
+await writeFile(path.join(dist,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+indexable.map(r=>'<url><loc>https://nova941.com'+r+'</loc></url>').join('')+'</urlset>\n');
+console.log('Built '+routes.length+' pages for '+(preview?'preview':'production'));
