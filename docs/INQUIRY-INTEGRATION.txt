@@ -1,0 +1,44 @@
+Website inquiry adapter
+=======================
+Both existing service pages share site/inquiry.js and site/inquiry.css.
+Netlify /api/inquiries uses lib/inquiry.mjs and calls the existing
+nova_lead_command RPC. No new customer table or migration is required.
+
+Runtime configuration: secret NOVA_INQUIRY_CONFIG JSON in Netlify.
+Fields: mode (qa/live), url, key, workspace, qaWorkspace, actor,
+signingSecret and qaToken. Never commit values. Use only the production
+deploy context. The free plan includes Builds/Functions/Runtime secret
+scopes; post-processing and untrusted preview contexts must not receive it.
+
+QA: mode=qa rejects public submissions. X-Nova-QA routes only to qaWorkspace.
+A QA browser session can start with #nova-qa=<token>; the fragment is
+immediately removed. Do not share QA links. Full-page navigation or reload
+requires re-entering QA mode. Production activation is a separate config
+change to mode=live plus deployment; QA submissions remain isolated.
+
+The endpoint accepts create-only, validates fields and consent, and fixes
+actor and workspace server-side. It cannot update or delete existing leads.
+HMAC challenges, honeypot, bounded payload and Netlify rate limits reduce
+abuse. Rate limits are not an absolute guarantee against distributed spam.
+The service key is broader than the endpoint; keep project access restricted.
+
+Idempotency uses the existing workspace/request UUID constraint and RPC.
+An identical retry returns the existing receipt. Changed content under the
+same ID is a conflict. This does not merge different requests from one person.
+An uncertain network result never displays success. Browser session storage
+holds only the request ID; no contact data is persisted there.
+
+Attribution: page, submission ID, consent and isTest stored in sourceDetail.
+Only opt-in URL parameters are copied. Google/cpc URL evidence maps to
+GOOGLE_ADS but is explicitly labelled unverified; otherwise source=WEBSITE.
+No advertising pixel, campaign, analytics cookie, AI assessment, SMS or email
+is activated by this adapter. The engine records server timestamps.
+
+Verification:
+node --test tests/inquiry.test.mjs
+npm run build
+npm run verify
+node scripts/preview-inquiry.mjs  (synthetic local backend, no Supabase)
+
+Rollback: set mode=qa or remove runtime config to stop public submissions;
+restore the prior Netlify deployment to remove the form. Preserve saved leads.

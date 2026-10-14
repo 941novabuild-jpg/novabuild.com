@@ -5,6 +5,8 @@ const dist=path.join(root,'dist');
 await rm(dist,{recursive:true,force:true});
 await cp(path.join(root,'site'),dist,{recursive:true});
 const routes=JSON.parse(await readFile(path.join(root,'routes.json'),'utf8'));
+// Shared form loader also handles existing client-side navigation between service pages.
+for(const route of routes){const f=path.join(dist,route==='/'?'index.html':route.slice(1)+'.html');let html=await readFile(f,'utf8');html=html.replace('</head>','<link rel="stylesheet" href="/inquiry.css"/></head>').replace('</body>','<script src="/inquiry.js" defer></script></body>');await writeFile(f,html);}
 const preview=!!process.env.CONTEXT&&process.env.CONTEXT!=='production';
 if(preview){for(const route of routes){const f=path.join(dist,route==='/'?'index.html':route.slice(1)+'.html');const html=await readFile(f,'utf8');await writeFile(f,html.replace(/<meta name="robots"[^>]*>/g,'<meta name="robots" content="noindex, nofollow"/>'));}await writeFile(path.join(dist,'_headers'),(await readFile(path.join(dist,'_headers'),'utf8'))+'\n/*\n  X-Robots-Tag: noindex, nofollow\n');}
 await writeFile(path.join(dist,'robots.txt'),preview?'User-agent: *\nDisallow: /\n':'User-agent: *\nAllow: /\nSitemap: https://nova941.com/sitemap.xml\n');
