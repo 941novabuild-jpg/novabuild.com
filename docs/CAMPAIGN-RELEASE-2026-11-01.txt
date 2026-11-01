@@ -4,7 +4,9 @@ Approved presentation: Sites source 190cbbe0f41b3034a191f66b9f09ac8b5169d6d1.
 Prior production source: 64b64a1 (inquiry integration).
 
 Scope: two existing service URLs only. Homepage, other routes, business tools,
-privacy notice, Netlify function and Nova Leads receiver are preserved.
+privacy notice, Nova Leads receiver are preserved. The Netlify function accepts an explicit
+NOVA_INQUIRY_MODE=live/qa override so activation does not require revealing
+or replacing the existing secret configuration.
 The production form uses NOVA_INQUIRY_CONFIG and existing Nova Leads RPC,
 not the separate Google Sheets receiver used in the design preview.
 No secrets were copied, no campaign was launched, no analytics IDs invented.
