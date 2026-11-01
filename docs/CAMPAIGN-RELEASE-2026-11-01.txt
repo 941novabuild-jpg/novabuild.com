@@ -1,0 +1,24 @@
+Kitchen and bathroom campaign release
+====================================
+Approved presentation: Sites source 190cbbe0f41b3034a191f66b9f09ac8b5169d6d1.
+Prior production source: 64b64a1 (inquiry integration).
+
+Scope: two existing service URLs only. Homepage, other routes, business tools,
+privacy notice, Netlify function and Nova Leads receiver are preserved.
+The production form uses NOVA_INQUIRY_CONFIG and existing Nova Leads RPC,
+not the separate Google Sheets receiver used in the design preview.
+No secrets were copied, no campaign was launched, no analytics IDs invented.
+
+campaign-src contains the approved shared React components and a small
+production inquiry mount adapter. scripts/build-campaign.mjs renders real
+HTML and bundles gallery/comparison hydration, then the existing build copies
+all public pages and attaches the existing consent-aware inquiry script.
+The compiled NOVA stylesheet is retained in campaign-src/campaign.css.
+
+Checks: isolated npm ci, production build, all 12 route/resource checks,
+8 inquiry contract tests, local synthetic browser submission, responsive
+layout and gallery/comparison checks. Real production receipt validation
+is performed after publication, separately from synthetic tests.
+
+Rollback: restore the preceding Netlify production deployment. No database
+schema or receiver change is required. Do not delete saved inquiries.

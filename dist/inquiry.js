@@ -4,13 +4,14 @@
  if(qa){history.replaceState(null,'',location.pathname+location.search+'#inquiry');}
  let mounted='';
  function install(){
+  if(document.querySelector('[data-nova-campaign]')&&!window.novaCampaignReady)return;
   const page=location.pathname.replace(/\/$/,''),service=services[page];
   if(!service){document.querySelector('#nova-inquiry')?.remove();mounted='';return;}
   const existing=document.querySelector('#nova-inquiry');if(existing&&mounted===page)return;existing?.remove();
   const main=document.querySelector('main');if(!main)return;mounted=page;
   const section=document.createElement('section');section.id='nova-inquiry';section.className='nova-inquiry';
   section.innerHTML=`<div class="ni-inner"><p class="ni-eyebrow">LET’S TALK ABOUT YOUR ${service.toUpperCase()}</p><h2>Tell us about your project.</h2><p>Share your city and the changes you have in mind. We’ll review your inquiry and discuss a useful next step. This is not an appointment booking.</p><p class="ni-status" role="status" aria-live="polite">Checking online inquiries…</p><form><div class="ni-grid"><label>Your name<input name="name" autocomplete="name" maxlength="120" required></label><label>Email or phone<input name="contact" autocomplete="email" maxlength="160" required></label><label>Project city<input name="city" autocomplete="address-level2" maxlength="100" required></label><label>Timing (optional)<input name="timing" maxlength="250" placeholder="For example, planning for next spring"></label></div><label>What would you like to change?<textarea name="brief" rows="4" maxlength="4000" required></textarea></label><div class="ni-honey" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div><label class="ni-check"><input name="contactConsent" type="checkbox" required><span>I would like Nova Build to contact me about this project. <a href="/privacy">Privacy policy</a></span></label><label class="ni-check"><input name="measurementConsent" type="checkbox"><span>Optional: include campaign details from this page’s link to help us understand how you found us. No advertising cookies are set by this form.</span></label><button type="submit" disabled>Send project inquiry</button><p>Prefer a conversation? <a href="tel:+12066999000">Call</a> or <a href="sms:+12066999000">text 206 699 9000</a>.</p></form></div>`;
-  main.append(section);
+  (document.querySelector('#nova-inquiry-mount')||main).append(section);
   const form=section.querySelector('form'),button=form.querySelector('button'),status=section.querySelector('.ni-status');
   let token='',busy=false,pending=null;
   const storageKey='nova-inquiry:'+service;
@@ -34,5 +35,5 @@
   ready();
  }
  new MutationObserver(()=>install()).observe(document.documentElement,{childList:true,subtree:true});
- addEventListener('popstate',install);install();
+ addEventListener('popstate',install);addEventListener('nova:campaign-ready',install);install();
 })();

@@ -1,5 +1,6 @@
 import {cp,rm,readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
+await import('./build-campaign.mjs');
 const root=path.resolve(import.meta.dirname,'..');
 const dist=path.join(root,'dist');
 await rm(dist,{recursive:true,force:true});

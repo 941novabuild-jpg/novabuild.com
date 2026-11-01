@@ -1,0 +1,306 @@
+{
+  "bathroom": {
+    "source": "IMG_3024",
+    "alt": "Bathroom with a fluted wood vanity, freestanding tub and glass shower.",
+    "caption": "NOVA BUILD / BATHROOM REMODELING",
+    "note": "\u4fdd\u7559\u73b0\u573a\u73bb\u7483\u6807\u7b7e\u548c\u53f0\u9762\u5c0f\u4ef6\uff1b\u8fd9\u662f\u5b9e\u9645\u73b0\u573a\u72b6\u6001\u3002",
+    "desktop": {
+      "src": "/projects/bathroom-desktop",
+      "width": 2400,
+      "height": 2400
+    },
+    "mobile": {
+      "src": "/projects/bathroom-mobile",
+      "width": 960,
+      "height": 1200
+    }
+  },
+  "vanity": {
+    "source": "IMG_3028",
+    "alt": "Double vanity with fluted wood cabinets, arched mirrors and brass fixtures.",
+    "caption": "NOVA BUILD / VANITY & FINISH DETAILS",
+    "note": "\u4fdd\u7559\u955c\u4e2d\u5b9e\u9645\u53cd\u5c04\u3001\u706f\u5177\u4eae\u90e8\u548c\u539f\u6709\u6750\u8d28\uff1b\u6ca1\u6709\u66f4\u6362\u67dc\u4f53\u3002",
+    "desktop": {
+      "src": "/projects/vanity-desktop",
+      "width": 2237,
+      "height": 2400
+    },
+    "mobile": {
+      "src": "/projects/vanity-mobile",
+      "width": 960,
+      "height": 1030
+    }
+  },
+  "slats": {
+    "source": "IMG_5891",
+    "alt": "Close-up of vertical wood slats and their natural grain.",
+    "caption": "NOVA BUILD / WOOD SLAT DETAIL",
+    "note": "\u684c\u9762\u7248\u662f\u6a2a\u5411\u7eb9\u7406\u7279\u5199\uff1b\u624b\u673a\u7248\u662f\u7ad6\u5411\u683c\u6805\u7279\u5199\uff0c\u4e0d\u4ee3\u8868\u5b8c\u6574\u7a7a\u95f4\u3002",
+    "desktop": {
+      "src": "/projects/slats-desktop",
+      "width": 1649,
+      "height": 1099
+    },
+    "mobile": {
+      "src": "/projects/slats-mobile",
+      "width": 663,
+      "height": 1400
+    }
+  },
+  "stone": {
+    "source": "IMG_7093",
+    "alt": "Waterfall countertop corner showing the original stone pattern beside wood flooring.",
+    "caption": "NOVA BUILD / COUNTERTOP DETAIL",
+    "note": "\u4fdd\u7559\u771f\u5b9e\u63a5\u7f1d\u548c\u77f3\u7eb9\uff0c\u4e0d\u91cd\u65b0\u7ed8\u5236\u7eb9\u7406\u3001\u4e0d\u9690\u85cf\u65bd\u5de5\u7455\u75b5\u3002",
+    "desktop": {
+      "src": "/projects/stone-desktop",
+      "width": 1214,
+      "height": 2400
+    },
+    "mobile": {
+      "src": "/projects/stone-mobile",
+      "width": 960,
+      "height": 1269
+    }
+  },
+  "porch": {
+    "source": "IMG_0728",
+    "alt": "Covered porch with white beams, gray siding and glass pendant lanterns.",
+    "caption": "NOVA BUILD / COVERED PORCH",
+    "note": "\u4fdd\u7559\u771f\u5b9e\u5c4b\u9762\u548c\u6881\u67f1\u6bd4\u4f8b\u3001\u5730\u9762\u73b0\u573a\u72b6\u6001\uff1b\u4e0d\u628a\u88f8\u571f\u5730\u9762\u53d8\u6210\u666f\u89c2\u3002",
+    "desktop": {
+      "src": "/projects/porch-desktop",
+      "width": 1765,
+      "height": 2400
+    },
+    "mobile": {
+      "src": "/projects/porch-mobile",
+      "width": 960,
+      "height": 1306
+    }
+  },
+  "interior": {
+    "source": "IMG_3005.HEIC",
+    "alt": "Double-height interior with black-framed windows and paneled walls.",
+    "caption": "NOVA BUILD / INTERIOR RENOVATION IN PROGRESS",
+    "note": "\u90e8\u5206\u7a97\u6237\u4ecd\u6709\u4fdd\u62a4\u6750\u6599\uff1b\u9002\u5408\u5efa\u7b51\u7a7a\u95f4\u5c55\u793a\uff0c\u4e0d\u80fd\u6dfb\u52a0\u4e0d\u5b58\u5728\u7684\u5bb6\u5177\u6216\u5b8c\u6210\u72b6\u6001\u3002",
+    "desktop": {
+      "src": "/projects/interior-desktop",
+      "width": 1908,
+      "height": 2400
+    },
+    "mobile": {
+      "src": "/projects/interior-mobile",
+      "width": 960,
+      "height": 1207
+    }
+  },
+  "trim": {
+    "source": "IMG_3500.HEIC",
+    "alt": "Detail of white door casings and interior trim.",
+    "caption": "NOVA BUILD / TRIM & JOINERY",
+    "note": "\u4fdd\u7559\u5b9e\u9645\u5899\u9762\u3001\u95e8\u5957\u7eb9\u7406\u53ca\u62cd\u6444\u89d2\u5ea6\uff1b\u4e0d\u9690\u85cf\u5b9e\u9645\u63a5\u7f1d\u3002",
+    "desktop": {
+      "src": "/projects/trim-desktop",
+      "width": 2061,
+      "height": 2400
+    },
+    "mobile": {
+      "src": "/projects/trim-mobile",
+      "width": 960,
+      "height": 1250
+    }
+  },
+  "tile": {
+    "source": "IMG_4928.HEIC",
+    "alt": "Tiled shower with an illuminated niche and herringbone floor tile.",
+    "caption": "NOVA BUILD / TILE DETAIL \u00b7 WORK IN PROGRESS",
+    "note": "\u539f\u59cb\u5168\u666f\u5c1a\u672a\u5b8c\u5de5\uff1b\u5c40\u90e8\u88c1\u540e\u7ea61210px\u5bbd\uff0c\u53ea\u7528\u4e8e\u670d\u52a1\u9875\u534a\u5e45\u6216\u5361\u7247\u3002\u58c1\u9f9b\u5c0f\u4ef6\u4fdd\u7559\u3002",
+    "desktop": {
+      "src": "/projects/tile-desktop",
+      "width": 1209,
+      "height": 2097
+    },
+    "mobile": {
+      "src": "/projects/tile-mobile",
+      "width": 830,
+      "height": 1440
+    }
+  },
+  "pendants": {
+    "source": "IMG_7088.heif",
+    "alt": "Oak-toned kitchen cabinetry with woven pendant lights and a wood ceiling feature.",
+    "caption": "NOVA BUILD / CABINETRY & PENDANT DETAIL",
+    "note": "\u7f51\u7ad9\u7248\u662f\u5c40\u90e8\u6784\u56fe\uff0c\u4e0d\u662f\u6574\u95f4\u53a8\u623f\u6e05\u573a\u4fee\u590d\uff1b\u82e5\u8981\u5b8c\u6574\u65e0\u5de5\u5177\u7684\u7a7a\u95f4\u4e3b\u56fe\uff0c\u9700\u8981\u8865\u62cd\u3002",
+    "desktop": {
+      "src": "/projects/pendants-desktop",
+      "width": 2400,
+      "height": 1329
+    },
+    "mobile": {
+      "src": "/projects/pendants-mobile",
+      "width": 960,
+      "height": 532
+    }
+  },
+  "sink": {
+    "source": "IMG_7098.HEIC",
+    "alt": "Farmhouse sink with a wood countertop and white cabinetry during installation.",
+    "caption": "NOVA BUILD / SINK & CABINETRY DETAIL \u00b7 WORK IN PROGRESS",
+    "note": "\u4fdd\u7559\u6c34\u9f99\u5934\u6807\u7b7e\u3001\u5305\u88c5\u53ca\u672a\u5b8c\u6210\u90e8\u4f4d\uff1b\u4e0d\u4f5c\u4e3a\u6e05\u573a\u5b8c\u5de5\u4e3b\u56fe\u3002",
+    "desktop": {
+      "src": "/projects/sink-desktop",
+      "width": 2400,
+      "height": 1605
+    },
+    "mobile": {
+      "src": "/projects/sink-mobile",
+      "width": 960,
+      "height": 1008
+    }
+  },
+  "custom-bench": {
+    "source": "IMG_0052.HEIC",
+    "alt": "Built-in entry bench with beadboard backing and open storage.",
+    "caption": "NOVA BUILD / CUSTOM ENTRY BENCH",
+    "note": "Owner-supplied edited version from NOVA-nine-2026-09-14. Light and tone edits; actual site conditions retained. Not dimensional or inspection evidence.",
+    "desktop": {
+      "src": "/projects/custom-bench-20260914-desktop",
+      "width": 1080,
+      "height": 1440
+    },
+    "mobile": {
+      "src": "/projects/custom-bench-20260914-mobile",
+      "width": 675,
+      "height": 900
+    }
+  },
+  "custom-detail": {
+    "source": "IMG_0053.HEIC",
+    "alt": "Trim and beadboard detail on the built-in entry bench.",
+    "caption": "NOVA BUILD / BENCH & TRIM DETAIL",
+    "note": "Owner-supplied edited version from NOVA-nine-2026-09-14. Light and tone edits; actual site conditions retained. Not dimensional or inspection evidence.",
+    "desktop": {
+      "src": "/projects/custom-detail-20260914-desktop",
+      "width": 1080,
+      "height": 1440
+    },
+    "mobile": {
+      "src": "/projects/custom-detail-20260914-mobile",
+      "width": 675,
+      "height": 900
+    }
+  },
+  "custom-shelves": {
+    "source": "IMG_0163.HEIC",
+    "alt": "Wood pantry shelves and cabinetry during installation.",
+    "caption": "NOVA BUILD / PANTRY SHELVING \u00b7 WORK IN PROGRESS",
+    "note": "Owner-supplied edited version from NOVA-nine-2026-09-14. Light and tone edits; actual site conditions retained. Not dimensional or inspection evidence.",
+    "desktop": {
+      "src": "/projects/custom-shelves-20260914-desktop",
+      "width": 1080,
+      "height": 1440
+    },
+    "mobile": {
+      "src": "/projects/custom-shelves-20260914-mobile",
+      "width": 675,
+      "height": 900
+    }
+  },
+  "custom-entry": {
+    "source": "IMG_0334.HEIC",
+    "alt": "Entry with a wood ceiling, painted wall panels and patterned tile floor.",
+    "caption": "NOVA BUILD / WOOD CEILING & ENTRY DETAILS",
+    "note": "Owner-supplied edited version from NOVA-nine-2026-09-14. Light and tone edits; actual site conditions retained. Not dimensional or inspection evidence.",
+    "desktop": {
+      "src": "/projects/custom-entry-20260914-desktop",
+      "width": 1080,
+      "height": 1440
+    },
+    "mobile": {
+      "src": "/projects/custom-entry-20260914-mobile",
+      "width": 675,
+      "height": 900
+    }
+  },
+  "kitchen-wide": {
+    "source": "IMG_0174",
+    "alt": "White kitchen cabinetry, a gray island, stone backsplash, and wood flooring",
+    "caption": "NOVA BUILD \u00b7 KITCHEN",
+    "note": "Owner-provided processed project photograph from NOVA-five-2026-09-14; supplied full composition retained",
+    "desktop": {
+      "src": "/projects/kitchen-wide-20260914-desktop",
+      "width": 1440,
+      "height": 1080
+    },
+    "mobile": {
+      "src": "/projects/kitchen-wide-20260914-mobile",
+      "width": 900,
+      "height": 675
+    }
+  },
+  "backsplash": {
+    "source": "IMG_0173",
+    "alt": "Kitchen countertop, tile backsplash, and under-cabinet lighting detail",
+    "caption": "NOVA BUILD \u00b7 KITCHEN DETAIL",
+    "note": "Owner-provided processed project photograph from NOVA-five-2026-09-14; supplied full composition retained",
+    "desktop": {
+      "src": "/projects/backsplash-20260914-desktop",
+      "width": 1080,
+      "height": 1440
+    },
+    "mobile": {
+      "src": "/projects/backsplash-20260914-mobile",
+      "width": 675,
+      "height": 900
+    }
+  },
+  "chandelier": {
+    "source": "IMG_4250",
+    "alt": "Brass and crystal chandelier installation in a NOVA Build renovation",
+    "caption": "NOVA BUILD \u00b7 LIGHTING DETAIL",
+    "note": "Owner-provided processed project photograph from NOVA-five-2026-09-14; supplied full composition retained",
+    "desktop": {
+      "src": "/projects/chandelier-20260914-desktop",
+      "width": 1080,
+      "height": 1440
+    },
+    "mobile": {
+      "src": "/projects/chandelier-20260914-mobile",
+      "width": 675,
+      "height": 900
+    }
+  },
+  "shower-wood": {
+    "source": "IMG_4435",
+    "alt": "Wood-look shower tile and penny-tile niche during construction, before fixtures and final cleanup",
+    "caption": "NOVA BUILD \u00b7 WORK IN PROGRESS",
+    "note": "Owner-provided processed project photograph from NOVA-five-2026-09-14; supplied full composition retained",
+    "desktop": {
+      "src": "/projects/shower-wood-20260914-desktop",
+      "width": 1080,
+      "height": 1440
+    },
+    "mobile": {
+      "src": "/projects/shower-wood-20260914-mobile",
+      "width": 675,
+      "height": 900
+    }
+  },
+  "copper-basin": {
+    "source": "IMG_7701",
+    "alt": "Copper vessel basin on a natural wood countertop during installation, before final finishing",
+    "caption": "NOVA BUILD \u00b7 WORK IN PROGRESS",
+    "note": "Owner-provided processed project photograph from NOVA-five-2026-09-14; supplied full composition retained",
+    "desktop": {
+      "src": "/projects/copper-basin-20260914-desktop",
+      "width": 1080,
+      "height": 1440
+    },
+    "mobile": {
+      "src": "/projects/copper-basin-20260914-mobile",
+      "width": 675,
+      "height": 900
+    }
+  }
+}
