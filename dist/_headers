@@ -7,3 +7,36 @@
 
 /*.rsc
   Content-Type: text/x-component
+
+/privacy
+  X-Robots-Tag: noindex, follow
+
+/privacy.html
+  X-Robots-Tag: noindex, follow
+
+/projects/kitchen-study
+  X-Robots-Tag: noindex, follow
+
+/projects/kitchen-study.html
+  X-Robots-Tag: noindex, follow
+
+/projects/bathroom-study
+  X-Robots-Tag: noindex, follow
+
+/projects/bathroom-study.html
+  X-Robots-Tag: noindex, follow
+
+/marketing-agent
+  X-Robots-Tag: noindex, follow
+
+/marketing-agent.html
+  X-Robots-Tag: noindex, follow
+
+/marketing-agent/privacy
+  X-Robots-Tag: noindex, follow
+
+/marketing-agent/privacy.html
+  X-Robots-Tag: noindex, follow
+
+/*.rsc
+  X-Robots-Tag: noindex
