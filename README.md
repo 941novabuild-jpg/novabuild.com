@@ -1,4 +1,4 @@
-# Nova941 网站更新包 · 2026-09-14
+# Nova941 网站 · 当前生产项目
 
 包含当前确认的首页、五个分类页、照片墙、图片放大/缩放、厨房与浴室对比滑块，以及原有页面链接
 正式域名 https://nova941.com · 电话 (206) 699-9000
@@ -28,7 +28,7 @@ git push origin main
    - Node.js：22
 6. 等待 Netlify 显示 Published，再打开 Nova941.com 刷新检查
 
-本包无 npm 依赖，不需要安装 React、运行后端或设置环境密钥
+当前版本使用 React/esbuild 构建厨房和浴室页面；先运行 npm ci。生产询价使用现有 Netlify Function 与 Nova Leads 配置，详见 docs/INQUIRY-INTEGRATION.txt；不要在文件或聊天中填写密钥。
 本包已附带匹配的 package-lock.json，请一起覆盖根目录旧锁文件；不要删除其他应用的锁文件
 
 ## 也可以手动上传
@@ -47,7 +47,7 @@ GitHub 自动部署仍连接时，之后 push 会再次覆盖手动上传版本�
 请保留 _next、comparisons、projects、images、所有 JS/CSS 和 .rsc 文件，删除它们会破坏照片放大和对比功能
 页面文字可在 site 对应 HTML 中查看，但交互内容也包含编译数据；后续修改优先回到本对话统一重新导出，避免仅改 HTML 造成加载后内容不一致
 
-网站未接入新的表单、广告像素或 Analytics
+当前网站已接入真实询价表单和需访客同意的 GA4/广告衡量。最新设置和验证边界见 docs/SEO-ADS-FOLLOWUP-2026-11-02.md。
 施工中照片保留现场状态；旧 study 路径保留且不加入搜索引擎 sitemap
 
 ## 发布后检查
