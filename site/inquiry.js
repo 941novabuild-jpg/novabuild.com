@@ -28,6 +28,7 @@
     pending={requestId,service,page,name:d.get('name'),contact:d.get('contact'),city:d.get('city'),brief:d.get('brief'),timing:d.get('timing'),website:d.get('website'),contactConsent:d.get('contactConsent')==='on',measurementConsent:consent,attribution};}
    status.textContent='Sending your inquiry…';
    try{const r=await fetch('/api/inquiries',{method:'POST',headers:headers(),body:JSON.stringify({...pending,token})}),b=await r.json();if(!r.ok||b.accepted!==true||b.receiptId!==requestId){if(r.status===400&&b.code==='TOKEN_EXPIRED'){await ready();b.error='The form session was refreshed. Please retry the same inquiry in a moment.';}else if(r.status===400){pending=null;for(const el of form.elements)el.disabled=false;}throw Error(b.error||'Receipt is not confirmed. Please retry this same inquiry.');}
+    dispatchEvent(new CustomEvent('nova:inquiry-received',{detail:{receiptId:b.receiptId,isTest:b.isTest===true}}));
     status.textContent=(b.isTest?'Test inquiry received. ':'Inquiry received. ')+`Reference: ${b.receiptId}. Thank you.`;button.textContent='Inquiry received';for(const el of form.elements)el.disabled=true;try{sessionStorage.removeItem(storageKey);}catch{}}
    catch(e){status.textContent=e.message||'Receipt is not confirmed. Retry to send the same inquiry, or call/text us.';button.disabled=false;button.textContent=pending?'Retry same inquiry':'Send project inquiry';if(pending){for(const el of form.elements)if(el!==button)el.disabled=true;}}
    finally{busy=false;}
